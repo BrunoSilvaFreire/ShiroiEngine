@@ -1,0 +1,12 @@
+[submodule "libs/glfw"]
+	path = libs/glfw
+	url = https://github.com/glfw/glfw
+[submodule "libs/glew"]
+	path = libs/glew
+	url = https://github.com/nigels-com/glew
+[submodule "libs/glm"]
+	path = libs/glm
+	url = https://github.com/g-truc/glm
+[submodule "libs/glog"]
+	path = libs/glog
+	url = https://github.com/google/glog
