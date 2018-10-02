@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(ShiroiEngine)
 include(cmake/ShiroiEngine.cmake)
 set(CMAKE_CXX_STANDARD 14)
-
+set(CMAKE_MODULE_PATH ${CMAKE_HOME_DIRECTORY}/cmake)
+set(SHIROIENGINE_LIBS_DIR ${CMAKE_HOME_DIRECTORY}/libs)
 add_subdirectory(engine)
 add_subdirectory(dummy)

@@ -1,2 +1,2 @@
 add_executable(dummy main.cpp)
-target_link_libraries(dummy common)
+target_link_libraries(dummy core)

@@ -1,5 +1,6 @@
-#ifndef SHIROIENGINE_TYPES_G
-#define SHIROIENGINE_TYPES_G
+#ifndef SHIROIENGINE_TYPES_H
+#define SHIROIENGINE_TYPES_H
+
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;
