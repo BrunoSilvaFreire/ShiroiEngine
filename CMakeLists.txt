@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 project(ShiroiEngine)
 include(cmake/ShiroiEngine.cmake)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${CMAKE_HOME_DIRECTORY}/cmake)
 set(SHIROIENGINE_LIBS_DIR ${CMAKE_HOME_DIRECTORY}/libs)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_HOME_DIRECTORY}/exported)
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+
 add_subdirectory(engine)
 add_subdirectory(dummy)

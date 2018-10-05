@@ -2,6 +2,9 @@
 #include <graphics/buffers/vertex_buffer.h>
 #include <graphics/buffers/vertex_array.h>
 #include <glog/logging.h>
+#include <graphics/shaders/shader_program.h>
+
+const string shaderPath = "../resources/core/shaders";
 
 int main() {
     Application app("Dummy Application");
@@ -11,6 +14,9 @@ int main() {
             0, 0.5F
     };
 
+    ShaderProgram *program = ShaderProgram::defaultProgram(shaderPath);
+    LOG(INFO) << "Successfully loaded shaders.";
+    program->bind();
     VertexLayout layout;
     layout.push<float32>(2);
     VertexArray vao;
@@ -18,13 +24,12 @@ int main() {
     uint16 indexData[] = {
             0, 1, 2
     };
-    IndexBuffer ibo(1, indexData);
-    VertexBuffer vbo(3, vertexData);
+    IndexBuffer ibo(3, indexData);
+    auto s = 6 * sizeof(float32);
+    VertexBuffer vbo(s, vertexData);
     vao.addLayout(layout, vbo);
-    LOG(INFO) << "Finished";
     app.getTickEvent() += [&](float32 value) {
-        vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glCall(glDrawArrays(GL_TRIANGLES, 0, 3));
     };
     app.run();
 }

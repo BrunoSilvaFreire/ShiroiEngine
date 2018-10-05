@@ -12,13 +12,12 @@ void glClearErrors() {
 void glCheckErrors(string functionName) {
     uint32 error;
     while ((error = glGetError()) != GLEW_NO_ERROR) {
-        LOG(ERROR) << "Error while calling function " << functionName << ": " << error;
+        LOG(FATAL) << "Error while calling function " << functionName << ": " << error;
     }
 }
 
 
 #define glCall(x) glClearErrors();\
-                  LOG(INFO) << "OpenGL Call: " << #x;\
                   x;\
                   glCheckErrors(#x);
 

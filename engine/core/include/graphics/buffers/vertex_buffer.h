@@ -61,7 +61,7 @@ public:
         return stride;
     }
 
-    uint32 size() {
+    size_t size() {
         return elements.size();
     }
 };

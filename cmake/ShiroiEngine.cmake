@@ -29,13 +29,15 @@ function(print_target_properties tgt)
         endif ()
     endforeach (prop)
 endfunction(print_target_properties)
+
 function(AddModule MODULE_NAME MODULE_SOURCES MODULE_DEPENDENCIES)
     add_library(${MODULE_NAME} ${MODULE_SOURCES})
     message("Creating module ${MODULE_NAME}...")
     #message("Using include directory '${CMAKE_CURRENT_SOURCE_DIR}/include'")
+    set(MODULE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
     target_include_directories(${MODULE_NAME}
             PUBLIC
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${MODULE_INCLUDE_DIR}>
             $<INSTALL_INTERFACE:include>
             )
     set_target_properties(${MODULE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
@@ -43,5 +45,14 @@ function(AddModule MODULE_NAME MODULE_SOURCES MODULE_DEPENDENCIES)
         message("Added library '${dependency}'")
         target_link_libraries(${MODULE_NAME} ${dependency})
     endforeach ()
-    print_target_properties(${MODULE_NAME})
+    set(MODULE_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources)
+    install(
+            TARGETS ${MODULE_NAME}
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/modules/${MODULE_NAME}
+    )
+    #[[install(DIRECTORY ${MODULE_INCLUDE_DIR}/
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${MODULE_NAME})]]
+    install(DIRECTORY ${MODULE_RESOURCES}/
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/resources/${MODULE_NAME}
+            )
 endfunction()

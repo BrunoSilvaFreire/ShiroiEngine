@@ -1,4 +1,6 @@
-.idea
+!/.idea/misc.xml
+.idea/modules.xml
 cmake-build*
 libs/glew/auto
 libs/glew/doc
+exported

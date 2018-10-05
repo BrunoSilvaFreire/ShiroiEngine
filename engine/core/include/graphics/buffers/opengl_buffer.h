@@ -12,18 +12,23 @@ public:
     virtual void unbind() = 0;
 
 };
-
-struct IGLBuffer : IGLBindable {
+struct IGLIndexable {
+public:
+    virtual const uint32 getID() const = 0;
+};
+struct IGLBuffer : IGLBindable, IGLIndexable {
 protected:
     uint32 id;
     int32 size;
 public:
     IGLBuffer(uint32 bufferTarget, int32 size, void *data) : id(0), size(size) {
-
-
-        glCall(glCreateBuffers(size, &id));
+        glCall(glCreateBuffers(1, &id));
         glCall(glBindBuffer(bufferTarget, id));
         glCall(glBufferData(bufferTarget, size, data, GL_STATIC_DRAW));
+    }
+
+    const uint32 getID() const override {
+        return id;
     }
 
     ~IGLBuffer() {
@@ -35,7 +40,7 @@ public:
 template<typename T>
 class AbstractIndexBuffer : IGLBuffer {
 public:
-    AbstractIndexBuffer(int32 size, T *data) : IGLBuffer(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(T), data) {}
+    AbstractIndexBuffer(int32 count, T *data) : IGLBuffer(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(T), data) {}
 
     void bind() override {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);

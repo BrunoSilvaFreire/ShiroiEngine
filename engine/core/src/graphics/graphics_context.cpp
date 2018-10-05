@@ -10,6 +10,7 @@ GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 
         LOG(ERROR) << "An error occoured while initializing GLFW (" << glfwInitCode << ")";
         throw std::runtime_error("Error while initializing GLFW");
     }
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     window = glfwCreateWindow(width, height, windowTitle, nullptr, nullptr);
     if (window == nullptr) {
         throw std::runtime_error("Couldn't create GLFW window");
@@ -17,6 +18,7 @@ GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 
     glfwMakeContextCurrent(window);
     LOG(INFO) << "Initializing GLEW";
     auto glewInitCode = glewInit();
+
     if (glewInitCode != GLEW_OK) {
         LOG(ERROR) << "An error occoured while initializing GLEW (" << glewInitCode << ") '"
                    << glewGetErrorString(glewInitCode) << "'";
