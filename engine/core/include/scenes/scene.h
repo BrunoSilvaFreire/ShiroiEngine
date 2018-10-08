@@ -1,6 +1,7 @@
 #ifndef SHIROIENGINE_SCENE_H
 #define SHIROIENGINE_SCENE_H
 
+#include <application/application.h>
 #include <vector>
 #include <types.h>
 #include <glm/glm.hpp>
@@ -35,6 +36,10 @@ public:
     void setScale(const glm::vec3 &scale) {
         Transform::scale = scale;
     }
+
+    void computeViewMatrix(glm::mat4 *result) const {
+        *result = glm::mat4();
+    }
 };
 
 class Scene;
@@ -46,11 +51,7 @@ typedef uint32 UUID;
 class Scene {
 private:
     std::vector<SceneObject *> objects;
-    Transform transform;
 public:
-    Transform &getTransform() {
-        return transform;
-    }
 
     const std::vector<SceneObject *> &getObjects() const {
         return objects;
@@ -66,7 +67,12 @@ public:
 class SceneObject {
 private:
     UUID uniqueId;
+    Transform transform;
 public:
+    const Transform &getTransform() const {
+        return transform;
+    }
+
     explicit SceneObject(Scene &scene) {
         uniqueId = scene.registerObject(this);
     }
@@ -74,6 +80,15 @@ public:
     UUID getUniqueId() const {
         return uniqueId;
     }
+
+
+    virtual void enable(Application &app) {}
+
+    virtual void disable(Application &app) {}
+
+    virtual void initialize(Application &app) {}
+
+    virtual void terminate(Application &app) {}
 };
 
 #endif

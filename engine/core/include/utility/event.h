@@ -9,10 +9,22 @@ class Event {
 public:
     typedef std::function<void(T...)> EventListener;
 private:
-    std::vector<EventListener> listeners;
+    std::vector<EventListener *> listeners;
 public:
-    void operator+=(EventListener listener) {
+    void operator+=(EventListener &listener) {
+        operator+=(&listener);
+    }
+
+    void operator+=(EventListener *listener) {
         listeners.push_back(listener);
+    }
+
+    void operator-=(EventListener &listener) {
+        operator-=(&listener);
+    }
+
+    void operator-=(EventListener *listener) {
+        listeners.erase(listener);
     }
 
     void operator()(T... arguments) {

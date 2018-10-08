@@ -25,7 +25,7 @@ void Application::run() {
     using clock = std::chrono::high_resolution_clock;
     while (!glfwGetKey(w, GLFW_KEY_ESCAPE) && !glfwWindowShouldClose(w)) {
         tickEvent(0.0166666667F);
-        renderEvent(context, context->getWindow());
+        renderEvent(context);
         glfwPollEvents();
         glfwSwapBuffers(w);
     }
@@ -35,10 +35,6 @@ GraphicsContext *Application::getContext() const {
     return context;
 }
 
- Event<GraphicsContext *, GLFWwindow *> &Application::getRenderEvent()  {
+Event<GraphicsContext *> &Application::getRenderEvent() {
     return renderEvent;
-}
-
-const Event<DamageInfo, Entity> &Entity::getOnDamaged() const {
-    return onDamaged;
 }

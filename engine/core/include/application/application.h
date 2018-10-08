@@ -11,7 +11,7 @@ private:
     string applicationName;
     GraphicsContext *context;
     Event<float32> tickEvent;
-    Event<GraphicsContext *, GLFWwindow *> renderEvent;
+    Event<GraphicsContext *> renderEvent;
 public:
     explicit Application(const char *appName);
 
@@ -21,7 +21,7 @@ public:
 
     Event<float32> &getTickEvent();
 
-    Event<GraphicsContext *, GLFWwindow *> &getRenderEvent();
+    Event<GraphicsContext *> &getRenderEvent();
 
     const string getApplicationName() const;
 
@@ -32,15 +32,4 @@ struct DamageInfo {
 
 
 };
-
-class Entity {
-private:
-    Event<DamageInfo, Entity> onDamaged;
-public:
-    const Event<DamageInfo, Entity> &getOnDamaged() const;
-};
-
-class EntityHealthBar {
-};
-
 #endif

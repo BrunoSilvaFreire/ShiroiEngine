@@ -14,29 +14,26 @@ public:
     };
 private:
     CameraTarget target;
-    glm::mat4 projectionMatrix;
-    uint32 embeddedTextureId;
+    float32 fieldOfView;
+    float32 nearPlane, farPlane;
+    Event<GraphicsContext *>::EventListener renderer;
 
-    void renderScene(Scene &scene) {
-        for (auto obj : scene.getObjects()) {
-            //obj->render(projectionMatrix, viewMatrix);
-        }
-    }
+    void reloadProjectionMatrix();
 
 public:
-    CameraTarget getTarget() const {
-        return target;
-    }
+    float32 getFieldOfView() const;
 
-    void setTarget(CameraTarget target) {
-        Camera::target = target;
-    }
+    void setFieldOfView(float32 fieldOfView);
 
-    Camera(Application &app, Scene &scene) : SceneObject(scene) {
-        app.getRenderEvent() += [&](GraphicsContext *context, GLFWwindow *window) {
-            renderScene(scene);
-        };
-    }
+    CameraTarget getTarget() const;
+
+    void setTarget(CameraTarget target);
+
+    Camera(Scene &scene);
+
+    virtual void enable(Application &app) override;
+
+    virtual void disable(Application &app) override;
 };
 
 #endif

@@ -11,6 +11,7 @@ set(CORE_COMMON
 set(CORE_SCENES
         include/scenes/scene.h
         include/scenes/objects/camera.h
+        src/scenes/objects/camera.cpp
         )
 set(CORE_BUFFERS
         include/graphics/buffers/opengl_buffer.h
