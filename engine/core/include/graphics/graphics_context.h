@@ -9,6 +9,9 @@
 #include <graphics/rendering.h>
 #include <iterator>
 
+/**
+ * This represents all the resources created alongside OpenGL that might be useful for us
+ */
 class GraphicsContext {
 private:
     GLFWwindow *window;
@@ -27,12 +30,6 @@ public:
     ~GraphicsContext();
 
     GLFWwindow *getWindow();
-
-    static void render(std::vector<IDrawable *> &objects, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-        for (IDrawable *drawable : objects) {
-            drawable->draw(viewMatrix, projectionMatrix);
-        }
-    }
 };
 
 #endif

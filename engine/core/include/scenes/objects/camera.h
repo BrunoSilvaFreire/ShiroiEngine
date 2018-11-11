@@ -16,7 +16,7 @@ private:
     CameraTarget target;
     float32 fieldOfView;
     float32 nearPlane, farPlane;
-    Event<GraphicsContext *>::EventListener renderer;
+    Event<float32>::EventListener renderer;
 
     void reloadProjectionMatrix();
 
@@ -29,11 +29,11 @@ public:
 
     void setTarget(CameraTarget target);
 
-    Camera(Scene &scene);
+    Camera(Scene *scene);
 
-    virtual void enable(Application &app) override;
+    virtual void enable() override;
 
-    virtual void disable(Application &app) override;
+    virtual void disable() override;
 };
 
 #endif

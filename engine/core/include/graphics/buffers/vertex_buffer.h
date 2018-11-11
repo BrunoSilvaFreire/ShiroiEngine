@@ -10,37 +10,17 @@ private:
     uint8 count;
     bool normalized;
 public:
-    static uint32 getTypeSize(uint32 type) {
-        switch (type) {
-            case GL_FLOAT:
-                return sizeof(float32);
-            case GL_UNSIGNED_INT:
-                return sizeof(uint32);
-            case GL_UNSIGNED_BYTE:
-                return sizeof(uint8);
-            default:
-                return 0;
-        }
-    }
+    static uint32 getTypeSize(uint32 type);
 
-    VertexLayoutElement(uint32 type, uint8 count, bool normalized) : type(type), count(count), normalized(normalized) {
-    }
+    VertexLayoutElement(uint32 type, uint8 count, bool normalized);
 
-    uint32 getType() const {
-        return type;
-    }
+    uint32 getType() const;
 
-    uint8 getCount() const {
-        return count;
-    }
+    uint8 getCount() const;
 
-    bool isNormalized() const {
-        return normalized;
-    }
+    bool isNormalized() const;
 
-    uint32 size() {
-        return count * getTypeSize(type);
-    }
+    uint32 size();
 };
 
 class VertexLayout {
@@ -49,53 +29,22 @@ private:
     uint16 stride = 0;
 public:
     template<typename T>
-    void push(uint8 amount) {
-        LOG(ERROR) << "You are only allowed to push float32, uint8, uint32";
-    }
+    void push(uint8 amount);
 
-    VertexLayoutElement &operator[](uint32 index) {
-        return elements[index];
-    }
+    VertexLayoutElement &operator[](uint32 index);
 
-    uint16 getStride() const {
-        return stride;
-    }
+    uint16 getStride() const;
 
-    size_t size() {
-        return elements.size();
-    }
+    size_t size();
 };
-template<>
-void VertexLayout::push<float32>(uint8 amount) {
-    elements.emplace_back(GL_FLOAT, amount, false);
-    stride += amount * sizeof(float32);
-}
-
-template<>
-void VertexLayout::push<uint8>(uint8 amount) {
-    elements.emplace_back(GL_UNSIGNED_BYTE, amount, false);
-    stride += amount * sizeof(uint8);
-}
-
-template<>
-void VertexLayout::push<uint32>(uint8 amount) {
-    elements.emplace_back(GL_UNSIGNED_INT, amount, true);
-    stride += amount * sizeof(uint32);
-}
 
 class VertexBuffer : IGLBuffer {
 public:
-    explicit VertexBuffer(int32 size, void *data) : IGLBuffer(GL_ARRAY_BUFFER, size, data) {
+    explicit VertexBuffer(int32 size, void *data);
 
-    }
+    void bind() override;
 
-    void bind() override {
-        glCall(glBindBuffer(GL_ARRAY_BUFFER, id));
-    }
-
-    void unbind() override {
-        glCall(glBindBuffer(GL_ARRAY_BUFFER, 0))
-    }
+    void unbind() override;
 };
 
 #endif

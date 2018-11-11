@@ -3,6 +3,7 @@
 #include <graphics/buffers/vertex_array.h>
 #include <glog/logging.h>
 #include <graphics/shaders/shader_program.h>
+#include <scenes/objects/camera.h>
 
 const string shaderPath = "../resources/core/shaders";
 
@@ -28,8 +29,8 @@ int main() {
     auto s = 6 * sizeof(float32);
     VertexBuffer vbo(s, vertexData);
     vao.addLayout(layout, vbo);
-    app.getTickEvent() += [&](float32 value) {
-        glCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-    };
+    Scene scene;
+    Camera camera(&scene);
     app.run();
 }
+

@@ -1,23 +1,23 @@
 #include <scenes/objects/camera.h>
-
 float32 Camera::getFieldOfView() const {
     return fieldOfView;
 }
 
-void Camera::enable(Application &app) {
-    renderer = [&](GraphicsContext *context) {
-        glm::mat4 viewMatrix;
-        getTransform().computeViewMatrix(&viewMatrix);
+void Camera::enable() {
+    auto scene = getScene();
+    renderer = [&](float32 deltaTime) {
+        glm::mat4 vpMatrix;
+        getTransform().computeViewMatrix(&vpMatrix);
         int32 width, height;
-        glfwGetWindowSize(context->getWindow(), &width, &height);
-        auto projectionMatrix = glm::perspective(fieldOfView, (float) width / height, nearPlane, farPlane);;
-        app.getContext()->render(projectionMatrix, viewMatrix);
+        glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
+        vpMatrix *= glm::perspective(fieldOfView, (float) width / height, nearPlane, farPlane);
+        scene->getSceneRenderer().render(0, vpMatrix);
     };
-    app.getRenderEvent() += renderer;
+    scene->getApplication()->getLateUpdateEvent() += &renderer;
 }
 
-void Camera::disable(Application &app) {
-    app.getRenderEvent() -= renderer;
+void Camera::disable() {
+    getScene()->getApplication()->getLateUpdateEvent() -= &renderer;
     renderer = nullptr;
 }
 
@@ -34,7 +34,7 @@ void Camera::setTarget(Camera::CameraTarget target) {
     Camera::target = target;
 }
 
-Camera::Camera(Scene &scene) : SceneObject(scene) {
+Camera::Camera(Scene *scene) : SceneObject(scene) {
 }
 
 void Camera::reloadProjectionMatrix() {

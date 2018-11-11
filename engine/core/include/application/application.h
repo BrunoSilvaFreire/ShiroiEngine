@@ -10,8 +10,8 @@ class Application {
 private:
     string applicationName;
     GraphicsContext *context;
-    Event<float32> tickEvent;
-    Event<GraphicsContext *> renderEvent;
+    Event<float32> earlyUpdateEvent;
+    Event<float32> lateUpdateEvent;
 public:
     explicit Application(const char *appName);
 
@@ -19,11 +19,11 @@ public:
 
     GraphicsContext *getContext() const;
 
-    Event<float32> &getTickEvent();
-
-    Event<GraphicsContext *> &getRenderEvent();
-
     const string getApplicationName() const;
+
+    Event<float32> &getEarlyUpdateEvent();
+
+    Event<float32> &getLateUpdateEvent();
 
     void run();
 };

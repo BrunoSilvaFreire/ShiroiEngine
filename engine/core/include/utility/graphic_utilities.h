@@ -5,16 +5,9 @@
 #include <GL/glew.h>
 #include <types.h>
 
-void glClearErrors() {
-    while (glGetError() != GLEW_NO_ERROR);
-}
+void glClearErrors();
 
-void glCheckErrors(string functionName) {
-    uint32 error;
-    while ((error = glGetError()) != GLEW_NO_ERROR) {
-        LOG(FATAL) << "Error while calling function " << functionName << ": " << error;
-    }
-}
+void glCheckErrors(string functionName);
 
 
 #define glCall(x) glClearErrors();\

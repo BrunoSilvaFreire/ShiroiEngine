@@ -1,7 +1,6 @@
 #include <application/application.h>
 #include <chrono>
 
-
 Application::Application(const char *appName) {
     LOG(INFO) << "Initializing application";
     applicationName = appName;
@@ -12,20 +11,18 @@ Application::~Application() {
     delete context;
 }
 
-Event<float32> &Application::getTickEvent() {
-    return tickEvent;
-}
-
 const string Application::getApplicationName() const {
     return applicationName;
 }
+
+#define FAKE_DELTA_TIME 0.0166666667F
 
 void Application::run() {
     auto w = context->getWindow();
     using clock = std::chrono::high_resolution_clock;
     while (!glfwGetKey(w, GLFW_KEY_ESCAPE) && !glfwWindowShouldClose(w)) {
-        tickEvent(0.0166666667F);
-        renderEvent(context);
+        earlyUpdateEvent(FAKE_DELTA_TIME);
+        lateUpdateEvent(FAKE_DELTA_TIME);
         glfwPollEvents();
         glfwSwapBuffers(w);
     }
@@ -35,6 +32,10 @@ GraphicsContext *Application::getContext() const {
     return context;
 }
 
-Event<GraphicsContext *> &Application::getRenderEvent() {
-    return renderEvent;
+Event<float32> &Application::getEarlyUpdateEvent() {
+    return earlyUpdateEvent;
+}
+
+Event<float32> &Application::getLateUpdateEvent() {
+    return lateUpdateEvent;
 }
