@@ -6,6 +6,7 @@ set(CORE_COMMON
         include/types.h
         include/utility/event.h
         include/utility/graphic_utilities.h
+        include/utility/string_utility.h
         src/graphics/utility/graphic_utilities.cpp
         include/utility/embed_shapes.h
         src/utility/embed_shapes.cpp
@@ -21,6 +22,8 @@ set(CORE_SCENES
         src/scenes/objects/camera.cpp
         src/scenes/scene.cpp
         )
+set(CORE_DEBUG
+        include/utility/debug_utility.h)
 set(CORE_BUFFERS
         include/graphics/buffers/opengl_buffer.h
         include/graphics/buffers/vertex_buffer.h
@@ -41,7 +44,7 @@ set(CORE_GRAPHICS
         ${CORE_BUFFERS}
         ${CORE_SHADERS}
         )
-set(CORE_ALL ${CORE_APPLICATION} ${CORE_GRAPHICS} ${CORE_COMMON} ${CORE_SCENES})
+set(CORE_ALL ${CORE_APPLICATION} ${CORE_GRAPHICS} ${CORE_COMMON} ${CORE_SCENES} ${CORE_DEBUG})
 find_package(GLFW REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)

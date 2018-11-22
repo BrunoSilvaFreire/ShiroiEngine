@@ -13,5 +13,7 @@ void glCheckErrors(string functionName);
 #define glCall(x) glClearErrors();\
                   x;\
                   glCheckErrors(#x);
-
+#define glDeclare(var, x)  glClearErrors();\
+                  auto var = x;\
+                  glCheckErrors(#x);
 #endif

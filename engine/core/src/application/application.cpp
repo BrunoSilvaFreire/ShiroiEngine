@@ -2,7 +2,7 @@
 #include <chrono>
 
 Application::Application(const char *appName) {
-    LOG(INFO) << "Initializing application";
+    LOG(INFO) << "Initializing application '" << appName << "'";
     applicationName = appName;
     context = new GraphicsContext(appName);
 }
@@ -21,10 +21,7 @@ void Application::run() {
     auto w = context->getWindow();
     using clock = std::chrono::high_resolution_clock;
     while (!glfwGetKey(w, GLFW_KEY_ESCAPE) && !glfwWindowShouldClose(w)) {
-        LOG(INFO) << "Updating";
-        earlyUpdateEvent(FAKE_DELTA_TIME);
-        lateUpdateEvent(FAKE_DELTA_TIME);
-        LOG(INFO) << "late Updating";
+        mainStepFunction(FAKE_DELTA_TIME);
         glfwPollEvents();
         glfwSwapBuffers(w);
     }
@@ -34,10 +31,6 @@ GraphicsContext *Application::getContext() const {
     return context;
 }
 
-Event<float32> &Application::getEarlyUpdateEvent() {
-    return earlyUpdateEvent;
-}
-
-Event<float32> &Application::getLateUpdateEvent() {
-    return lateUpdateEvent;
+StepFunction &Application::getMainStepFunction() {
+    return mainStepFunction;
 }

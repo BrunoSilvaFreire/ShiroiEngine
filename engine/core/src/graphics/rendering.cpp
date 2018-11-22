@@ -5,9 +5,7 @@
 #include <graphics/rendering.h>
 
 void Renderer::render(uint32 renderTarget, glm::mat4 vpMatrix) const {
-    LOG(INFO) << "Yay";
     for (const QueuedDrawable &d : drawables) {
-        LOG(INFO) << "Drawing " << d;
         d.getDrawable()->draw(vpMatrix);
     }
 }

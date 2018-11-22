@@ -14,7 +14,6 @@ public:
         EXTERNAL_TEXTURE
     };
 private:
-
     SERIALIZE()
     CameraTarget target;
 
@@ -24,7 +23,6 @@ private:
     SERIALIZE()
     float32 nearPlane, farPlane;
 
-    SERIALIZE()
     Event<float32>::EventListener renderer;
 
     void reloadProjectionMatrix();

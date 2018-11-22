@@ -2,6 +2,7 @@
 #define SHIROIENGINE_VERTEX_BUFFER_H
 
 #include <vector>
+#include <ostream>
 #include "opengl_buffer.h"
 
 struct VertexLayoutElement {
@@ -12,15 +13,22 @@ private:
 public:
     static uint32 getTypeSize(uint32 type);
 
+
     VertexLayoutElement(uint32 type, uint8 count, bool normalized);
 
     uint32 getType() const;
+
+    const string getTypeName() const;
 
     uint8 getCount() const;
 
     bool isNormalized() const;
 
-    uint32 size();
+    const uint32 size() const;
+
+    friend std::ostream &operator<<(std::ostream &os, const VertexLayoutElement &element);
+
+    std::string getStringFromData(uint8 *ptr);
 };
 
 class VertexLayout {
@@ -36,6 +44,9 @@ public:
     uint16 getStride() const;
 
     size_t size();
+
+    const std::vector<VertexLayoutElement> &getElements() const;
+
 };
 
 class VertexBuffer : IGLBuffer {

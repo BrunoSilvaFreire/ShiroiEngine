@@ -25,6 +25,20 @@ void SceneObject::initialize() {}
 
 void SceneObject::terminate() {}
 
+std::ostream &operator<<(std::ostream &os, const SceneObject &object) {
+    OLECHAR *str;
+    StringFromCLSID(object.uniqueId, &str);
+    os << "SceneObject(uniqueId: " << str << ")";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const SceneObject *object) {
+    OLECHAR *str;
+    StringFromCLSID(object->uniqueId, &str);
+    os << "SceneObject(uniqueId: " << str << ")";
+    return os;
+}
+
 Application *Scene::getApplication() const {
     return application;
 }
@@ -40,12 +54,14 @@ void Scene::disable() {
 }
 
 void Scene::enable() {
+    LOG(INFO) << "Enabling scene " << this << " with a total of " << objects.size() << " objects.";
     for (SceneObject *obj : objects) {
+        LOG(INFO) << "Enabling object " << obj;
         obj->enable();
     }
 }
 
-const Renderer &Scene::getSceneRenderer() const {
+Renderer &Scene::getSceneRenderer() {
     return sceneRenderer;
 }
 
@@ -61,5 +77,5 @@ UUID Scene::registerObject(SceneObject *object) {
 #endif
 }
 
-Scene::Scene(Application *application) : application(application), sceneRenderer(), objects() {
+Scene::Scene(Application *app) : application(app), sceneRenderer(), objects() {
 }

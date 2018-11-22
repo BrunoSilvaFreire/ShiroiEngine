@@ -3,11 +3,11 @@
 StepFunction::StepFunction() : earlyStep(), lateStep() {
 }
 
-const Event<float32> &StepFunction::getEarlyStep() const {
+Event<float32> &StepFunction::getEarlyStep() {
     return earlyStep;
 }
 
-const Event<float32> &StepFunction::getLateStep() const {
+Event<float32> &StepFunction::getLateStep() {
     return lateStep;
 }
 

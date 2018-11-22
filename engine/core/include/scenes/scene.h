@@ -41,9 +41,9 @@ public:
     }
 
     void computeViewMatrix(glm::mat4 *result) const {
-        glm::mat4 mat = glm::translate(glm::mat4(), position);
+        glm::mat4 mat = glm::scale(mat, scale);
         mat *= glm::toMat4(rotation);
-        mat *= glm::scale(mat, scale);
+        mat *= glm::translate(glm::mat4(), position);
 
     }
 };
@@ -55,6 +55,7 @@ class SceneObject;
 #ifdef WIN32
 
 #include <windows.h>
+#include <ostream>
 
 #else
 typedef uint32 UUID;
@@ -66,7 +67,7 @@ private:
     std::vector<SceneObject *> objects;
     Renderer sceneRenderer;
 public:
-    explicit Scene(Application *application);
+    explicit Scene(Application *app);
 
     void enable();
 
@@ -76,7 +77,7 @@ public:
 
     Application *getApplication() const;
 
-    const Renderer &getSceneRenderer() const;
+    Renderer &getSceneRenderer();
 
     UUID registerObject(SceneObject *object);
 };
@@ -102,6 +103,10 @@ public:
     virtual void initialize();
 
     virtual void terminate();
+
+    friend std::ostream &operator<<(std::ostream &os, const SceneObject &object);
+
+    friend std::ostream &operator<<(std::ostream &os, const SceneObject *object);
 };
 
 #endif

@@ -11,9 +11,9 @@ private:
 public:
     StepFunction();
 
-    const Event<float32> &getEarlyStep() const;
+    Event<float32> &getEarlyStep();
 
-    const Event<float32> &getLateStep() const;
+    Event<float32> &getLateStep();
 
     void operator()(float32 deltaTime);
 };

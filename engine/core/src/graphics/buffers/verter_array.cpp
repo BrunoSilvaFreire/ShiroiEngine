@@ -6,20 +6,15 @@ void VertexArray::unbind() {
 }
 
 void VertexArray::addLayout(VertexLayout &layout, VertexBuffer &buffer) {
-    LOG(INFO) << "Bingind self";
     bind();
-    LOG(INFO) << "Bingind buffer";
     buffer.bind();
-    LOG(INFO) << "Bingind Getting stride";
     auto stride = layout.getStride();
     uint32 offset = 0;
     for (uint32 i = 0; i < layout.size(); ++i) {
         auto element = layout[i];
         glCall(glEnableVertexAttribArray(i));
-        LOG(INFO) << "Enabling vertex attri #" << i;
-        LOG(INFO) << element.getCount() << ", " << element.getType() << ", " << element.isNormalized()
-                  << ", stride: "
-                  << stride;
+        LOG(INFO) << "Enabling vertex attribute #" << i;
+        LOG(INFO) << element;
         glCall(glVertexAttribPointer(i, element.getCount(), element.getType(),
                                      (GLboolean) element.isNormalized(), stride,
                                      reinterpret_cast<const void *>(offset)));
@@ -41,6 +36,5 @@ VertexArray::~VertexArray() {
 }
 
 void VertexArray::bind() {
-    LOG(INFO) << "Binding VAO @ " << id;
     glCall(glBindVertexArray(id));
 }

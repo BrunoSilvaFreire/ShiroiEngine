@@ -5,13 +5,13 @@
 #include <glog/logging.h>
 #include <graphics/graphics_context.h>
 #include <utility/event.h>
+#include <utility/step_function.h>
 
 class Application {
 private:
     string applicationName;
     GraphicsContext *context;
-    Event<float32> earlyUpdateEvent;
-    Event<float32> lateUpdateEvent;
+    StepFunction mainStepFunction;
 public:
     explicit Application(const char *appName);
 
@@ -21,9 +21,7 @@ public:
 
     const string getApplicationName() const;
 
-    Event<float32> &getEarlyUpdateEvent();
-
-    Event<float32> &getLateUpdateEvent();
+    StepFunction &getMainStepFunction();
 
     void run();
 };

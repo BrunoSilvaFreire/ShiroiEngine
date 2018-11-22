@@ -5,25 +5,17 @@ float32 Camera::getFieldOfView() const {
 }
 
 void Camera::enable() {
-    auto scene = getScene();
     renderer = [&](float32 deltaTime) {
-        LOG(INFO) << "Drawing";
         glm::mat4 vpMatrix;
         getTransform().computeViewMatrix(&vpMatrix);
         int32 width, height;
-        LOG(INFO) << "Getting window size @ " << scene;
-        LOG(INFO) << "Application = " << scene->getApplication();
-        auto isNull = scene->getApplication()->getContext() == nullptr;
-        LOG(INFO) << "Is null @ " << isNull;
-        LOG(INFO) << "Context = " << scene->getApplication()->getContext();
-        LOG(INFO) << "Window = " << scene->getApplication()->getContext()->getWindow();
-        /*glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
+        auto scene = getScene();
+        glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
         vpMatrix *= glm::perspective(fieldOfView, (float) width / height, nearPlane, farPlane);
-        LOG(INFO) << "rendering";
-        scene->getSceneRenderer().render(0, vpMatrix);*/
-        LOG(INFO) << "Drawed";
+        scene->getSceneRenderer().render(0, vpMatrix);
     };
-    //scene->getApplication()->getLateUpdateEvent() += &renderer;
+    auto scene = getScene();
+    scene->getApplication()->getMainStepFunction().getLateStep() += &renderer;
 }
 
 void Camera::disable() {

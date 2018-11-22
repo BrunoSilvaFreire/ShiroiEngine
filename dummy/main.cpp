@@ -7,22 +7,22 @@
 #include <utility/file_utility.h>
 #include <scenes/objects/static_mesh.h>
 
-int main() {
+int main(int count, const string *params) {
     Application app("Dummy Application");
-    auto path = getExecutableDirectory();
-    LOG(INFO) << "Executing @ '" << path << '\'';
-    path += "/../resources/core/shaders";
+    auto path = "../resources/core/shaders";
     ShaderProgram *program;
     try {
-        program = ShaderProgram::defaultProgram(path.c_str());
+        program = ShaderProgram::defaultProgram(path);
     } catch (std::runtime_error &ex) {
+        LOG(INFO) << "Error while loading shaders '" << ex.what() << '\'';
         return -1;
     }
     LOG(INFO) << "Successfully loaded shaders.";
     program->bind();
     Scene scene(&app);
     Camera camera(&scene);
-    StaticMesh cube(&scene, EmbedShapes::kCube);
+    auto s = EmbedShapes::kQuad;
+    StaticMesh cube(&scene, s);
     scene.enable();
     app.run();
     scene.disable();
