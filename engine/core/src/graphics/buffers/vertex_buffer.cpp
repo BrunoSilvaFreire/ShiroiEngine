@@ -10,7 +10,7 @@ uint16 VertexLayout::getStride() const {
 
 template<typename T>
 void VertexLayout::push(uint8 amount) {
-    LOG(ERROR) << "You are only allowed to push float32, uint8, uint32";
+    static_assert(false, "You are only allowed to push float32, uint8, uint32")
 }
 
 
@@ -64,7 +64,8 @@ uint32 VertexLayoutElement::getType() const {
     return type;
 }
 
-VertexLayoutElement::VertexLayoutElement(uint32 type, uint8 count, bool normalized) : type(type), count(count), normalized(normalized) {
+VertexLayoutElement::VertexLayoutElement(uint32 type, uint8 count, bool normalized) : type(type), count(count),
+                                                                                      normalized(normalized) {
 }
 
 uint32 VertexLayoutElement::getTypeSize(uint32 type) {

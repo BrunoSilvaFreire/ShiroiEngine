@@ -4,6 +4,7 @@
 #include <scenes/scene.h>
 #include <application/application.h>
 #include <glm/glm.hpp>
+#include <serialization/annotation_macros.h>
 
 class Camera : SceneObject {
 public:
@@ -13,14 +14,24 @@ public:
         EXTERNAL_TEXTURE
     };
 private:
+
+    SERIALIZE()
     CameraTarget target;
+
+    SERIALIZE()
     float32 fieldOfView;
+
+    SERIALIZE()
     float32 nearPlane, farPlane;
+
+    SERIALIZE()
     Event<float32>::EventListener renderer;
 
     void reloadProjectionMatrix();
 
 public:
+    explicit Camera(Scene *scene);
+
     float32 getFieldOfView() const;
 
     void setFieldOfView(float32 fieldOfView);
@@ -29,11 +40,10 @@ public:
 
     void setTarget(CameraTarget target);
 
-    Camera(Scene *scene);
 
-    virtual void enable() override;
+    void enable() override;
 
-    virtual void disable() override;
+    void disable() override;
 };
 
 #endif

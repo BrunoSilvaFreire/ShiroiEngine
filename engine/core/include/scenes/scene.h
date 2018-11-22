@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
+
 #include <glm/gtx/quaternion.hpp>
 
 struct Transform {
@@ -51,7 +52,13 @@ class Scene;
 
 class SceneObject;
 
+#ifdef WIN32
+
+#include <windows.h>
+
+#else
 typedef uint32 UUID;
+#endif
 
 class Scene {
 private:
@@ -59,24 +66,19 @@ private:
     std::vector<SceneObject *> objects;
     Renderer sceneRenderer;
 public:
+    explicit Scene(Application *application);
 
-    const std::vector<SceneObject *> &getObjects() const {
-        return objects;
-    }
+    void enable();
 
-    Application *getApplication() const {
-        return application;
-    }
+    void disable();
 
-    const Renderer &getSceneRenderer() const {
-        return sceneRenderer;
-    }
+    const std::vector<SceneObject *> &getObjects() const;
 
-    UUID registerObject(SceneObject *object) {
-        objects.push_back(object);
-        // TODO: Create real unique id
-        return reinterpret_cast<uint32 >(object);
-    }
+    Application *getApplication() const;
+
+    const Renderer &getSceneRenderer() const;
+
+    UUID registerObject(SceneObject *object);
 };
 
 class SceneObject {
@@ -85,30 +87,21 @@ private:
     Transform transform;
     Scene *scene;
 public:
-    const Transform &getTransform() const {
-        return transform;
-    }
+    const Transform &getTransform() const;
 
-    explicit SceneObject(Scene *scene) : transform() {
-        uniqueId = scene->registerObject(this);
-        this->scene = scene;
-    }
+    explicit SceneObject(Scene *scene);
 
-    UUID getUniqueId() const {
-        return uniqueId;
-    }
+    UUID getUniqueId() const;
 
-    Scene *getScene() const {
-        return scene;
-    }
+    Scene *getScene() const;
 
-    virtual void enable() {}
+    virtual void enable();
 
-    virtual void disable() {}
+    virtual void disable();
 
-    virtual void initialize() {}
+    virtual void initialize();
 
-    virtual void terminate() {}
+    virtual void terminate();
 };
 
 #endif

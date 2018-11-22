@@ -6,7 +6,6 @@ void VertexArray::unbind() {
 }
 
 void VertexArray::addLayout(VertexLayout &layout, VertexBuffer &buffer) {
-    unbind();
     LOG(INFO) << "Bingind self";
     bind();
     LOG(INFO) << "Bingind buffer";

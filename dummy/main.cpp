@@ -4,33 +4,28 @@
 #include <glog/logging.h>
 #include <graphics/shaders/shader_program.h>
 #include <scenes/objects/camera.h>
-
-const string shaderPath = "../resources/core/shaders";
+#include <utility/file_utility.h>
+#include <scenes/objects/static_mesh.h>
 
 int main() {
     Application app("Dummy Application");
-    float32 vertexData[] = {
-            -0.5F, -0.5F,
-            0.5F, -0.5F,
-            0, 0.5F
-    };
-
-    ShaderProgram *program = ShaderProgram::defaultProgram(shaderPath);
+    auto path = getExecutableDirectory();
+    LOG(INFO) << "Executing @ '" << path << '\'';
+    path += "/../resources/core/shaders";
+    ShaderProgram *program;
+    try {
+        program = ShaderProgram::defaultProgram(path.c_str());
+    } catch (std::runtime_error &ex) {
+        return -1;
+    }
     LOG(INFO) << "Successfully loaded shaders.";
     program->bind();
-    VertexLayout layout;
-    layout.push<float32>(2);
-    VertexArray vao;
-    vao.bind();
-    uint16 indexData[] = {
-            0, 1, 2
-    };
-    IndexBuffer ibo(3, indexData);
-    auto s = 6 * sizeof(float32);
-    VertexBuffer vbo(s, vertexData);
-    vao.addLayout(layout, vbo);
-    Scene scene;
+    Scene scene(&app);
     Camera camera(&scene);
+    StaticMesh cube(&scene, EmbedShapes::kCube);
+    scene.enable();
     app.run();
+    scene.disable();
+    program->unbind();
 }
 

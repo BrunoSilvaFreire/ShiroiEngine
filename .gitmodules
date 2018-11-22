@@ -10,3 +10,6 @@
 [submodule "libs/glog"]
 	path = libs/glog
 	url = https://github.com/google/glog
+[submodule "libs/tinyobjloader"]
+	path = libs/tinyobjloader
+	url = https://github.com/syoyo/tinyobjloader

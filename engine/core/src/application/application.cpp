@@ -21,8 +21,10 @@ void Application::run() {
     auto w = context->getWindow();
     using clock = std::chrono::high_resolution_clock;
     while (!glfwGetKey(w, GLFW_KEY_ESCAPE) && !glfwWindowShouldClose(w)) {
+        LOG(INFO) << "Updating";
         earlyUpdateEvent(FAKE_DELTA_TIME);
         lateUpdateEvent(FAKE_DELTA_TIME);
+        LOG(INFO) << "late Updating";
         glfwPollEvents();
         glfwSwapBuffers(w);
     }

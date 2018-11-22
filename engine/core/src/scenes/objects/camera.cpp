@@ -1,4 +1,5 @@
 #include <scenes/objects/camera.h>
+
 float32 Camera::getFieldOfView() const {
     return fieldOfView;
 }
@@ -6,18 +7,27 @@ float32 Camera::getFieldOfView() const {
 void Camera::enable() {
     auto scene = getScene();
     renderer = [&](float32 deltaTime) {
+        LOG(INFO) << "Drawing";
         glm::mat4 vpMatrix;
         getTransform().computeViewMatrix(&vpMatrix);
         int32 width, height;
-        glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
+        LOG(INFO) << "Getting window size @ " << scene;
+        LOG(INFO) << "Application = " << scene->getApplication();
+        auto isNull = scene->getApplication()->getContext() == nullptr;
+        LOG(INFO) << "Is null @ " << isNull;
+        LOG(INFO) << "Context = " << scene->getApplication()->getContext();
+        LOG(INFO) << "Window = " << scene->getApplication()->getContext()->getWindow();
+        /*glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
         vpMatrix *= glm::perspective(fieldOfView, (float) width / height, nearPlane, farPlane);
-        scene->getSceneRenderer().render(0, vpMatrix);
+        LOG(INFO) << "rendering";
+        scene->getSceneRenderer().render(0, vpMatrix);*/
+        LOG(INFO) << "Drawed";
     };
-    scene->getApplication()->getLateUpdateEvent() += &renderer;
+    //scene->getApplication()->getLateUpdateEvent() += &renderer;
 }
 
 void Camera::disable() {
-    getScene()->getApplication()->getLateUpdateEvent() -= &renderer;
+    //getScene()->getApplication()->getLateUpdateEvent() -= &renderer;
     renderer = nullptr;
 }
 

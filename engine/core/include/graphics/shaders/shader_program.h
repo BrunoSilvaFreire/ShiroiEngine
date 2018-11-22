@@ -6,6 +6,7 @@
 #include <utility/graphic_utilities.h>
 #include <fstream>
 #include <filesystem>
+#include <utility/embed_shapes.h>
 
 class ShaderSource {
 private:

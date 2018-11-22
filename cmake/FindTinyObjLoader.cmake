@@ -1,0 +1,1 @@
+add_subdirectory(${SHIROIENGINE_LIBS_DIR}/tinyobjloader ${CMAKE_BINARY_DIR}/libs/tinyobjloader)
