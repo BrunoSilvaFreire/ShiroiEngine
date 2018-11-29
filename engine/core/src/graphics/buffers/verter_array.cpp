@@ -13,8 +13,7 @@ void VertexArray::addLayout(VertexLayout &layout, VertexBuffer &buffer) {
     for (uint32 i = 0; i < layout.size(); ++i) {
         auto element = layout[i];
         glCall(glEnableVertexAttribArray(i));
-        LOG(INFO) << "Enabling vertex attribute #" << i;
-        LOG(INFO) << element;
+        LOG(INFO) << "Enabling vertex attribute #" << i << " " << element;
         glCall(glVertexAttribPointer(i, element.getCount(), element.getType(),
                                      (GLboolean) element.isNormalized(), stride,
                                      reinterpret_cast<const void *>(offset)));
@@ -29,6 +28,7 @@ const uint32 VertexArray::getID() const {
 
 VertexArray::VertexArray(uint32 size) : id(0), size(size) {
     glCall(glGenVertexArrays(size, &id));
+    LOG(INFO) << "Vertex array created @ " << id;
 }
 
 VertexArray::~VertexArray() {

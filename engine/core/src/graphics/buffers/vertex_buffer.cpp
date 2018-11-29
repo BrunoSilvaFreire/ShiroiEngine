@@ -90,10 +90,12 @@ const string VertexLayoutElement::getTypeName() const {
 std::string VertexLayoutElement::getStringFromData(uint8 *ptr) {
     std::stringstream stream;
 
+
     stream << (uint32) count << "x " << getTypeName() << " (";
     auto tSize = getTypeSize(type);
     for (int i = 0; i < count; ++i) {
         auto pos = ptr + i * tSize;
+
         switch (type) {
             case GL_FLOAT:
                 stream << *((float32 *) pos);

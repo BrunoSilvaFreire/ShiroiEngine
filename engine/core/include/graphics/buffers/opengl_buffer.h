@@ -25,6 +25,7 @@ public:
         glCall(glCreateBuffers(1, &id));
         glCall(glBindBuffer(bufferTarget, id));
         glCall(glBufferData(bufferTarget, size, data, GL_STATIC_DRAW));
+        LOG(INFO) << "Vertex created @ " << id << " for buffer " << bufferTarget;
     }
 
     const uint32 getID() const override {
@@ -43,14 +44,13 @@ public:
     AbstractIndexBuffer(int32 count, T *data) : IGLBuffer(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(T), data) {}
 
     void bind() override {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id));
     }
 
     void unbind() override {
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     }
 };
 
-typedef AbstractIndexBuffer<uint16> IndexBuffer;
+typedef AbstractIndexBuffer<uint32> IndexBuffer;
 #endif

@@ -3,6 +3,7 @@
 
 #include <types.h>
 #include <vector>
+#include <graphics/shaders/shader_program.h>
 
 template<typename T>
 struct MaterialProperty {
@@ -27,9 +28,13 @@ private:
     std::vector<MaterialProperty<float32 >> floatProperties;
     std::vector<MaterialProperty<uint32 >> uintProperties;
 public:
-    uint32 getShaderId() const {
-        return shaderId;
-    }
+    static const Material INVALID;
+
+    Material(uint32 shaderId);
+
+    Material(ShaderProgram *shaderId);
+
+    uint32 getShaderId() const;
 };
 
 #endif

@@ -12,8 +12,9 @@ private:
     VertexBuffer *vbo;
     IndexBuffer *ibo;
     uint32 totalIndices;
+    Material * material;
 public:
-    StaticMesh(Scene *scene, Mesh &mesh);
+    StaticMesh(Scene *scene, Mesh *mesh);
 
     void draw(glm::mat4 mvpMatrix) override;
 

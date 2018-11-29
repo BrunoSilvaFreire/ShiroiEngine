@@ -9,11 +9,14 @@ void glClearErrors();
 
 void glCheckErrors(string functionName);
 
+void glPrintBoundTargets() ;
 
 #define glCall(x) glClearErrors();\
                   x;\
                   glCheckErrors(#x);
+
 #define glDeclare(var, x)  glClearErrors();\
                   auto var = x;\
                   glCheckErrors(#x);
+
 #endif

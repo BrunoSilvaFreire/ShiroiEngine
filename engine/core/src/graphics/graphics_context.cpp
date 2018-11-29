@@ -1,6 +1,9 @@
 #include <graphics/graphics_context.h>
 #include <glog/logging.h>
 
+void errorCB(int a, const char *desc) {
+    LOG(ERROR) << "GLFW error #" << a << ": " << desc;
+}
 
 GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 height) {
 
@@ -10,8 +13,10 @@ GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 
         LOG(ERROR) << "An error occoured while initializing GLFW (" << glfwInitCode << ")";
         throw std::runtime_error("Error while initializing GLFW");
     }
-    /*glfwWindowHint(GLFW_VERSION_MAJOR, GL_VERSION_4_0);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR , 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwSetErrorCallback(errorCB);
     window = glfwCreateWindow(width, height, windowTitle, nullptr, nullptr);
     if (window == nullptr) {
         throw std::runtime_error("Couldn't create GLFW window");
@@ -25,6 +30,7 @@ GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 
                    << glewGetErrorString(glewInitCode) << "'";
         throw std::runtime_error("Error while initializing GLEW");
     }
+    glFrontFace(GL_CW);
 
     LOG(INFO) << "OpenGL '" << glGetString(GL_VERSION) << "' succesfully initialized (GLFW: " << glfwGetVersionString()
               << ")";

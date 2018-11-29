@@ -9,6 +9,10 @@
 #include <iomanip>
 #include <types.h>
 
+#define CONCATENATE_TO(var, x) std::stringstream stream_##var;\
+        stream_##var << x;\
+        std::string var = stream.str();
+
 template<typename TInputIter>
 std::string hex(TInputIter first, TInputIter last, bool use_uppercase = true, bool insert_spaces = false) {
     std::ostringstream ss;

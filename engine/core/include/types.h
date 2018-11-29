@@ -1,6 +1,8 @@
 #ifndef SHIROIENGINE_TYPES_H
 #define SHIROIENGINE_TYPES_H
+
 #define interface class
+
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;

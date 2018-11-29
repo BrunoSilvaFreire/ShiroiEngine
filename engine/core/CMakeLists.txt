@@ -8,10 +8,11 @@ set(CORE_COMMON
         include/utility/graphic_utilities.h
         include/utility/string_utility.h
         src/graphics/utility/graphic_utilities.cpp
-        include/utility/embed_shapes.h
-        src/utility/embed_shapes.cpp
+        include/services/builtin/embed_shapes.h
+        src/services/builtin/embed_shapes.cpp
         include/utility/step_function.h
         src/utility/step_function.cpp
+        include/utility/collection_utilities.h
         )
 
 set(CORE_SCENES
@@ -30,17 +31,27 @@ set(CORE_BUFFERS
         include/graphics/buffers/vertex_array.h
         src/graphics/buffers/verter_array.cpp
         src/graphics/buffers/vertex_buffer.cpp
-        include/graphics/mesh.h
+
         )
 set(CORE_SHADERS
         include/graphics/shaders/shader_program.h
         )
 
+set(CORE_SERVICES
+        include/services/service.h
+        src/services/service.cpp
+        include/services/service_manager.h
+        src/services/service_manager.cpp
+        )
 set(CORE_GRAPHICS
         include/graphics/graphics_context.h
         src/graphics/graphics_context.cpp
         include/graphics/rendering.h
         src/graphics/rendering.cpp
+        include/graphics/mesh.h
+        src/graphics/mesh.cpp
+        include/graphics/material.h
+        src/graphics/material.cpp
         ${CORE_BUFFERS}
         ${CORE_SHADERS}
         )

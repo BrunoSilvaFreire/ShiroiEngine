@@ -6,12 +6,14 @@
 #include <graphics/graphics_context.h>
 #include <utility/event.h>
 #include <utility/step_function.h>
+#include <services/service_manager.h>
 
 class Application {
 private:
     string applicationName;
     GraphicsContext *context;
     StepFunction mainStepFunction;
+    ServiceManager *serviceManager;
 public:
     explicit Application(const char *appName);
 
@@ -24,6 +26,8 @@ public:
     StepFunction &getMainStepFunction();
 
     void run();
+
+    ServiceManager *getServiceManager();
 };
 
 struct DamageInfo {

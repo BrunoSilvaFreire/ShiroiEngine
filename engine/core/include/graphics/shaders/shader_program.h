@@ -6,8 +6,7 @@
 #include <utility/graphic_utilities.h>
 #include <fstream>
 #include <filesystem>
-#include <utility/embed_shapes.h>
-
+#include <graphics/buffers/opengl_buffer.h>
 class ShaderSource {
 private:
     std::string src;
@@ -150,6 +149,10 @@ public:
 
     ~ShaderProgram() {
         glCall(glDeleteProgram(programID));
+    }
+
+    uint32 getProgramID() const {
+        return programID;
     }
 
     void bind() override {
