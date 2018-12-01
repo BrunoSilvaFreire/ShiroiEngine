@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 #include <serialization/annotation_macros.h>
 
-class Camera : SceneObject {
+class Camera : public SceneObject {
 public:
     enum CameraTarget {
         SCREEN,
@@ -28,7 +28,7 @@ private:
     void reloadProjectionMatrix();
 
 public:
-    explicit Camera(Scene *scene);
+    explicit Camera(Scene *scene, float32 nearPlane = 1.0F, float32 farPlane = 500.0F, float32 fov = 60);
 
     float32 getFieldOfView() const;
 

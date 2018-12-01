@@ -44,13 +44,14 @@ const VertexLayout &Mesh::getLayout() const {
     return layout;
 }
 
-void Mesh::exportMesh(VertexArray **vao, VertexBuffer **vbo, IndexBuffer **ibo) {
-    *vao = new VertexArray();
-    auto tVBO = new VertexBuffer(totalVertices * layout.getStride(), vertPtr);
-    *vbo = tVBO;
-    LOG(INFO) << "Using " << indices.size();
-    *ibo = new IndexBuffer(indices.size(), indices.data());
-    (*vao)->addLayout(layout, *tVBO);
+void Mesh::exportMesh(VertexArray **vaoPtr, VertexBuffer **vboPtr, IndexBuffer **iboPtr) {
+    auto vao = new VertexArray();
+    *vaoPtr = vao;
+    auto vbo = new VertexBuffer(totalVertices * layout.getStride(), vertPtr);
+    *vboPtr = vbo;
+    auto ibo = new IndexBuffer(indices.size(), indices.data());
+    *iboPtr = ibo;
+    vao->addLayout(layout, vbo, ibo);
 }
 
 void *Mesh::getVertPtr() const {

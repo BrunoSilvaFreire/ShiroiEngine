@@ -20,7 +20,7 @@ public:
     Mesh(const VertexLayout &layout, void *vertPtr, uint32 totalVertices, const std::vector<uint32> &indices,
          Material *mat);
 
-    void exportMesh(VertexArray **vao, VertexBuffer **vbo, IndexBuffer **ibo);
+    void exportMesh(VertexArray **vaoPtr, VertexBuffer **vboPtr, IndexBuffer **iboPtr);
 
     const VertexLayout &getLayout() const;
 

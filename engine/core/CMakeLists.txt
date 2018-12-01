@@ -23,6 +23,9 @@ set(CORE_SCENES
         src/scenes/objects/camera.cpp
         src/scenes/scene.cpp
         )
+set(CORE_MATHS
+        include/maths/angles.h
+        )
 set(CORE_DEBUG
         include/utility/debug_utility.h)
 set(CORE_BUFFERS
@@ -55,7 +58,7 @@ set(CORE_GRAPHICS
         ${CORE_BUFFERS}
         ${CORE_SHADERS}
         )
-set(CORE_ALL ${CORE_APPLICATION} ${CORE_GRAPHICS} ${CORE_COMMON} ${CORE_SCENES} ${CORE_DEBUG})
+set(CORE_ALL ${CORE_APPLICATION} ${CORE_GRAPHICS} ${CORE_COMMON} ${CORE_SCENES} ${CORE_DEBUG} ${CORE_MATHS})
 find_package(GLFW REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)

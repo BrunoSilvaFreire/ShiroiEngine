@@ -22,9 +22,9 @@ GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 
         throw std::runtime_error("Couldn't create GLFW window");
     }
     glfwMakeContextCurrent(window);
+    LOG(INFO) << "GLFW OK";
     LOG(INFO) << "Initializing GLEW";
     auto glewInitCode = glewInit();
-
     if (glewInitCode != GLEW_OK) {
         LOG(ERROR) << "An error occoured while initializing GLEW (" << glewInitCode << ") '"
                    << glewGetErrorString(glewInitCode) << "'";
@@ -32,16 +32,15 @@ GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 
     }
     glFrontFace(GL_CW);
 
+    LOG(INFO) << "GLEW OK";
     LOG(INFO) << "OpenGL '" << glGetString(GL_VERSION) << "' succesfully initialized (GLFW: " << glfwGetVersionString()
               << ")";
 }
 
 GraphicsContext::~GraphicsContext() {
     if (window != nullptr) {
-        LOG(INFO) << "Destroying GLFW window";
         glfwDestroyWindow(window);
     }
-    LOG(INFO) << "Termination GLFW";
     glfwTerminate();
 }
 

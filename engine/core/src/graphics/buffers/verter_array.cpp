@@ -5,9 +5,10 @@ void VertexArray::unbind() {
     glCall(glBindVertexArray(0));
 }
 
-void VertexArray::addLayout(VertexLayout &layout, VertexBuffer &buffer) {
+void VertexArray::addLayout(VertexLayout &layout, VertexBuffer * buffer, IndexBuffer * ibo) {
     bind();
-    buffer.bind();
+    buffer->bind();
+    ibo->bind();
     auto stride = layout.getStride();
     uint32 offset = 0;
     for (uint32 i = 0; i < layout.size(); ++i) {

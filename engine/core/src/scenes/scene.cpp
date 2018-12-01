@@ -5,10 +5,6 @@ SceneObject::SceneObject(Scene *scene) : transform() {
     this->scene = scene;
 }
 
-const Transform &SceneObject::getTransform() const {
-    return transform;
-}
-
 UUID SceneObject::getUniqueId() const {
     return uniqueId;
 }

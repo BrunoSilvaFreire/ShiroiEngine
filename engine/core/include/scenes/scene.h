@@ -9,42 +9,32 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 struct Transform {
-private:
+public:
+    Transform(
+            const glm::vec3 &position = glm::vec3(0, 0, 0),
+            const glm::quat &rotation = glm::quat(1, 0, 0, 0),
+            const glm::vec3 &scale = glm::vec3(1, 1, 1)
+    ) : position(position),
+        rotation(rotation),
+        scale(scale) {}
+
     glm::vec3 position;
     glm::quat rotation;
     glm::vec3 scale;
-public:
-    const glm::vec3 &getPosition() const {
-        return position;
+
+    inline glm::mat4 toViewMatrix() const {
+        return glm::translate(glm::mat4(1), position) * glm::toMat4(rotation);
     }
 
-    void setPosition(const glm::vec3 &position) {
-        Transform::position = position;
-    }
-
-    const glm::quat &getRotation() const {
-        return rotation;
-    }
-
-    void setRotation(const glm::quat &rotation) {
-        Transform::rotation = rotation;
-    }
-
-    const glm::vec3 &getScale() const {
-        return scale;
-    }
-
-    void setScale(const glm::vec3 &scale) {
-        Transform::scale = scale;
-    }
-
-    void computeViewMatrix(glm::mat4 *result) const {
-        glm::mat4 mat = glm::scale(mat, scale);
-        mat *= glm::toMat4(rotation);
-        mat *= glm::translate(glm::mat4(), position);
-
+    friend std::ostream &operator<<(std::ostream &os, const Transform &transform) {
+        return os << "Transform(" <<
+                  "position: " << glm::to_string(transform.position) <<
+                  ", rotation: " << glm::to_string(transform.rotation) <<
+                  ", scale: " << glm::to_string(transform.scale) <<
+                  ")";
     }
 };
 
@@ -85,10 +75,9 @@ public:
 class SceneObject {
 private:
     UUID uniqueId;
-    Transform transform;
     Scene *scene;
 public:
-    const Transform &getTransform() const;
+    Transform transform;
 
     explicit SceneObject(Scene *scene);
 

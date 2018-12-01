@@ -1,4 +1,6 @@
 #include <scenes/objects/camera.h>
+#include <glm/gtx/string_cast.hpp>
+#include <maths/angles.h>
 
 float32 Camera::getFieldOfView() const {
     return fieldOfView;
@@ -6,12 +8,14 @@ float32 Camera::getFieldOfView() const {
 
 void Camera::enable() {
     renderer = [&](float32 deltaTime) {
-        glm::mat4 vpMatrix;
-        getTransform().computeViewMatrix(&vpMatrix);
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glm::mat4 vpMatrix = transform.toViewMatrix();
         int32 width, height;
         auto scene = getScene();
         glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
-        vpMatrix *= glm::perspective(fieldOfView, (float) width / height, nearPlane, farPlane);
+        auto aspect = (float) width / height;
+        vpMatrix = glm::perspective(fieldOfView * DEG_TO_RAD, aspect, nearPlane, farPlane) * vpMatrix;
         scene->getSceneRenderer().render(0, vpMatrix);
     };
     auto scene = getScene();
@@ -19,7 +23,7 @@ void Camera::enable() {
 }
 
 void Camera::disable() {
-    //getScene()->getApplication()->getLateUpdateEvent() -= &renderer;
+    getScene()->getApplication()->getMainStepFunction().getLateStep() -= &renderer;
     renderer = nullptr;
 }
 
@@ -36,7 +40,9 @@ void Camera::setTarget(Camera::CameraTarget target) {
     Camera::target = target;
 }
 
-Camera::Camera(Scene *scene) : SceneObject(scene) {
+Camera::Camera(Scene *scene, float32 nearPlane, float32 farPlane, float32 fov) : SceneObject(scene),
+                                                                                 nearPlane(nearPlane),
+                                                                                 farPlane(farPlane), fieldOfView(fov) {
 }
 
 void Camera::reloadProjectionMatrix() {

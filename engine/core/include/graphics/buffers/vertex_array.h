@@ -20,7 +20,7 @@ public:
 
     const uint32 getID() const override;
 
-    void addLayout(VertexLayout &layout, VertexBuffer &buffer);
+    void addLayout(VertexLayout &layout, VertexBuffer * buffer, IndexBuffer * ibo);
 };
 
 #endif

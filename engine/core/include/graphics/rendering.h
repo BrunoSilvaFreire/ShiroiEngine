@@ -7,9 +7,9 @@
 #include <queue>
 #include <ostream>
 
-interface IDrawable {
+class IDrawable {
 public:
-    virtual void draw(glm::mat4 viewMatrix) = 0;
+    virtual void draw(glm::mat4 vpMatrix) = 0;
 };
 
 class Renderer {

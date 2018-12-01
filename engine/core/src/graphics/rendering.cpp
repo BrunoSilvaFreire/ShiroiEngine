@@ -1,8 +1,9 @@
 //
 // Created by Bruno Silva Freire on 10/11/2018.
 //
-
+#define GLM_ENABLE_EXPERIMENTAL
 #include <graphics/rendering.h>
+#include <glm/gtx/string_cast.hpp>
 
 void Renderer::render(uint32 renderTarget, glm::mat4 vpMatrix) const {
     for (const QueuedDrawable &d : drawables) {

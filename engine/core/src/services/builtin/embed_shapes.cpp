@@ -21,11 +21,11 @@ uint32 EmbedShapes::cubeIndices[36] = {
         4, 5, 6, 6, 7, 4
 };
 
-glm::vec2 EmbedShapes::quadVertices[4] = {
-        glm::vec2(0.5, 0.5),
-        glm::vec2(0.5, -0.5),
-        glm::vec2(-0.5, -0.5),
-        glm::vec2(-0.5, 0.5)
+glm::vec3 EmbedShapes::quadVertices[4] = {
+        glm::vec3(0.5, 0.5, 0),
+        glm::vec3(0.5, -0.5, 0),
+        glm::vec3(-0.5, -0.5, 0),
+        glm::vec3(-0.5, 0.5, 0)
 };
 
 uint32 EmbedShapes::quadIndices[6] = {
@@ -57,10 +57,9 @@ EmbedShapes::EmbedShapes() {
             std::vector<uint32>(cubeIndices, cubeIndices + 36), embedMaterial
     );
     quad = new Mesh(
-            embedLayout2D, (void *) quadVertices, 4,
+            embedLayout3D, (void *) quadVertices, 4,
             std::vector<uint32>(quadIndices, quadIndices + 6), embedMaterial
     );
-    LOG(INFO) << "Embeded meshes created.";
 }
 
 Mesh *EmbedShapes::getCube() const {

@@ -25,7 +25,6 @@ public:
         glCall(glCreateBuffers(1, &id));
         glCall(glBindBuffer(bufferTarget, id));
         glCall(glBufferData(bufferTarget, size, data, GL_STATIC_DRAW));
-        LOG(INFO) << "Vertex created @ " << id << " for buffer " << bufferTarget;
     }
 
     const uint32 getID() const override {

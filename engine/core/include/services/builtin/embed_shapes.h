@@ -20,7 +20,7 @@ private:
     static glm::vec3 cubeVertices[8];
     static uint32 cubeIndices[36];
     // Quad
-    static glm::vec2 quadVertices[4];
+    static glm::vec3 quadVertices[4];
     static uint32 quadIndices[6];
 
 public:

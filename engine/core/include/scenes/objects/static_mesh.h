@@ -16,7 +16,7 @@ private:
 public:
     StaticMesh(Scene *scene, Mesh *mesh);
 
-    void draw(glm::mat4 mvpMatrix) override;
+    void draw(glm::mat4 vpMatrix) override;
 
     void enable() override;
 
