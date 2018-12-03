@@ -10,13 +10,13 @@ void Camera::enable() {
     renderer = [&](float32 deltaTime) {
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
-        glm::mat4 vpMatrix = transform.toViewMatrix();
         int32 width, height;
         auto scene = getScene();
         glfwGetWindowSize(scene->getApplication()->getContext()->getWindow(), &width, &height);
         auto aspect = (float) width / height;
-        vpMatrix = glm::perspective(fieldOfView * DEG_TO_RAD, aspect, nearPlane, farPlane) * vpMatrix;
-        scene->getSceneRenderer().render(0, vpMatrix);
+        auto viewMatrix = transform.toViewMatrix();
+        auto perspectiveMatrix = glm::perspective(fieldOfView * DEG_TO_RAD, aspect, nearPlane, farPlane);
+        scene->getSceneRenderer().render(0, viewMatrix, perspectiveMatrix);
     };
     auto scene = getScene();
     scene->getApplication()->getMainStepFunction().getLateStep() += &renderer;

@@ -9,7 +9,7 @@
 
 class IDrawable {
 public:
-    virtual void draw(glm::mat4 vpMatrix) = 0;
+    virtual void draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) = 0;
 };
 
 class Renderer {
@@ -54,7 +54,7 @@ public:
     void dequeue(IDrawable *drawable) {
     }
 
-    void render(uint32 renderTarget, glm::mat4 vpMatrix) const;
+    void render(uint32 renderTarget, glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const;
 };
 
 #endif

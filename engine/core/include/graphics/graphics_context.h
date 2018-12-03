@@ -17,8 +17,8 @@ private:
     GLFWwindow *window;
 
 public:
-    static const uint32 kDefaultWidth = 1920;
-    static const uint32 kDefaultHeight = 1080;
+    static const uint32 kDefaultWidth = 960;
+    static const uint32 kDefaultHeight = 540;
 
 
     explicit GraphicsContext(

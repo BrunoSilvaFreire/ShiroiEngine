@@ -6,17 +6,17 @@
 
 #define MVP_NAME "mvpMatrix"
 
-class StaticMesh : SceneObject, IDrawable {
+class StaticMesh : public SceneObject, IDrawable {
 private:
     VertexArray *vao;
     VertexBuffer *vbo;
     IndexBuffer *ibo;
     uint32 totalIndices;
-    Material * material;
+    Material *material;
 public:
     StaticMesh(Scene *scene, Mesh *mesh);
 
-    void draw(glm::mat4 vpMatrix) override;
+    void draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) override;
 
     void enable() override;
 

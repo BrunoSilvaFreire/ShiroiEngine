@@ -5,9 +5,9 @@
 #include <graphics/rendering.h>
 #include <glm/gtx/string_cast.hpp>
 
-void Renderer::render(uint32 renderTarget, glm::mat4 vpMatrix) const {
+void Renderer::render(uint32 renderTarget, glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const {
     for (const QueuedDrawable &d : drawables) {
-        d.getDrawable()->draw(vpMatrix);
+        d.getDrawable()->draw(viewMatrix, projectionMatrix);
     }
 }
 

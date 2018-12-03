@@ -13,7 +13,7 @@
 
 struct Transform {
 public:
-    Transform(
+    explicit Transform(
             const glm::vec3 &position = glm::vec3(0, 0, 0),
             const glm::quat &rotation = glm::quat(1, 0, 0, 0),
             const glm::vec3 &scale = glm::vec3(1, 1, 1)
@@ -25,8 +25,26 @@ public:
     glm::quat rotation;
     glm::vec3 scale;
 
-    inline glm::mat4 toViewMatrix() const {
-        return glm::translate(glm::mat4(1), position) * glm::toMat4(rotation);
+    glm::mat4 toViewMatrix() const {
+        return glm::lookAt(position, position + getForward(), glm::vec3(0, 1, 0));
+        //return glm::translate(glm::mat4(1), position) * glm::toMat4(rotation);
+    }
+
+    glm::mat4 toModelMatrix() const {
+        auto mat = glm::toMat4(rotation) * glm::scale(glm::mat4(1), scale);
+        return glm::translate(glm::mat4(1), position) * mat;
+    };
+
+    glm::vec3 getForward() const {
+        return rotation * glm::vec3(0, 0, 1);
+    }
+
+    glm::vec3 getUp() const {
+        return rotation * glm::vec3(0, 1, 0);
+    }
+
+    glm::vec3 getRight() const {
+        return rotation * glm::vec3(1, 0, 0);
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Transform &transform) {
