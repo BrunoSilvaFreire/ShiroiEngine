@@ -1,4 +1,4 @@
-#include <scenes/scene.h>
+#include "../../include/scenes/scene.h"
 
 SceneObject::SceneObject(Scene *scene) : transform() {
     uniqueId = scene->registerObject(this);

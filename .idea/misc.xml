@@ -7,6 +7,11 @@
       <file path="$PROJECT_DIR$/engine/core/include" />
       <file path="$PROJECT_DIR$/engine/core/resources" />
       <file path="$PROJECT_DIR$/engine/core/src" />
+      <file path="$PROJECT_DIR$/engine/jen/include" />
+      <file path="$PROJECT_DIR$/engine/jen/src" />
+      <file path="$PROJECT_DIR$/engine/scenes/generated" />
+      <file path="$PROJECT_DIR$/engine/scenes/include" />
+      <file path="$PROJECT_DIR$/engine/scenes/src" />
     </sourceRoots>
     <libraryRoots>
       <file path="$PROJECT_DIR$/libs" />

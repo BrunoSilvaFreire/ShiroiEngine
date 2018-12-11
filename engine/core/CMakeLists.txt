@@ -7,6 +7,7 @@ set(CORE_COMMON
         include/utility/event.h
         include/utility/graphic_utilities.h
         include/utility/string_utility.h
+        src/utility/string_utility.cpp
         src/graphics/utility/graphic_utilities.cpp
         include/services/builtin/embed_shapes.h
         src/services/builtin/embed_shapes.cpp
@@ -15,16 +16,12 @@ set(CORE_COMMON
         include/utility/collection_utilities.h
         )
 
-set(CORE_SCENES
-        include/scenes/scene.h
-        include/scenes/objects/camera.h
-        include/scenes/objects/static_mesh.h
-        src/scenes/objects/static_mesh.cpp
-        src/scenes/objects/camera.cpp
-        src/scenes/scene.cpp
-        )
 set(CORE_MATHS
         include/maths/angles.h
+        )
+set(CORE_SERIALIZATION
+        include/serialization/serialized_object.h
+        include/serialization/annotation_macros.h
         )
 set(CORE_DEBUG
         include/utility/debug_utility.h)
@@ -58,7 +55,7 @@ set(CORE_GRAPHICS
         ${CORE_BUFFERS}
         ${CORE_SHADERS}
         )
-set(CORE_ALL ${CORE_APPLICATION} ${CORE_GRAPHICS} ${CORE_COMMON} ${CORE_SCENES} ${CORE_DEBUG} ${CORE_MATHS})
+set(CORE_ALL ${CORE_APPLICATION} ${CORE_GRAPHICS} ${CORE_COMMON} ${CORE_DEBUG} ${CORE_MATHS})
 find_package(GLFW REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)

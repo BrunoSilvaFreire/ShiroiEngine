@@ -5,6 +5,7 @@
 #include <application/application.h>
 #include <glm/glm.hpp>
 #include <serialization/annotation_macros.h>
+#include <camera.gen.inl>
 
 class Camera : public SceneObject {
 public:
@@ -39,9 +40,13 @@ public:
     void setTarget(CameraTarget target);
 
 
-    void enable() override;
+    void enable()
 
-    void disable() override;
+    override;
+
+    void disable()
+
+    override;
 };
 
 #endif

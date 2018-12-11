@@ -13,3 +13,6 @@
 [submodule "libs/tinyobjloader"]
 	path = libs/tinyobjloader
 	url = https://github.com/syoyo/tinyobjloader
+[submodule "libs/gflags"]
+	path = libs/gflags
+	url = https://github.com/gflags/gflags.git

@@ -1,6 +1,4 @@
-//
-// Created by Bruno Silva Freire on 11/22/2018.
-//
+#pragma once
 
 #ifndef SHIROIENGINE_STRING_UTILITY_H
 #define SHIROIENGINE_STRING_UTILITY_H
@@ -8,23 +6,11 @@
 #include <sstream>
 #include <iomanip>
 #include <types.h>
-
-#define CONCATENATE_TO(var, x) std::stringstream stream_##var;\
-        stream_##var << x;\
-        std::string var = stream.str();
+#include <vector>
 
 template<typename TInputIter>
-std::string hex(TInputIter first, TInputIter last, bool use_uppercase = true, bool insert_spaces = false) {
-    std::ostringstream ss;
-    ss << std::hex << std::setfill('0');
-    if (use_uppercase)
-        ss << std::uppercase;
-    while (first != last) {
-        ss << std::setw(2) << static_cast<int>(*first++);
-        if (insert_spaces && first != last)
-            ss << " ";
-    }
-    return ss.str();
-}
+std::string hex(TInputIter first, TInputIter last, bool use_uppercase = true, bool insert_spaces = false);
 
-#endif //SHIROIENGINE_STRING_UTILITY_H
+std::vector<std::string> split(std::string strToSplit, int8 delimeter);
+
+#endif

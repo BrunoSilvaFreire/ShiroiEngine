@@ -5,6 +5,7 @@ function(AddModule MODULE_NAME MODULE_SOURCES MODULE_DEPENDENCIES)
     set(MODULE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
     target_include_directories(${MODULE_NAME}
             PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/generated>
             $<BUILD_INTERFACE:${MODULE_INCLUDE_DIR}>
             $<INSTALL_INTERFACE:include>
             )
