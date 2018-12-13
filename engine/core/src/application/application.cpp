@@ -12,7 +12,7 @@ Application::~Application() {
     delete context;
 }
 
-const string Application::getApplicationName() const {
+const c_string Application::getApplicationName() const {
     return applicationName;
 }
 

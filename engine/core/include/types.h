@@ -16,5 +16,5 @@ typedef long long int128;
 typedef float float32;
 typedef double float64;
 
-typedef const char *string;
+typedef const char * c_string;
 #endif

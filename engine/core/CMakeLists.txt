@@ -7,13 +7,17 @@ set(CORE_COMMON
         include/utility/event.h
         include/utility/graphic_utilities.h
         include/utility/string_utility.h
+        include/utility/collection_utilities.h
+        include/utility/step_function.h
+        include/utility/file_utility.h
+
         src/utility/string_utility.cpp
-        src/graphics/utility/graphic_utilities.cpp
+        src/utility/graphic_utilities.cpp
+        src/utility/step_function.cpp
+        src/utility/file_utility.cpp
+
         include/services/builtin/embed_shapes.h
         src/services/builtin/embed_shapes.cpp
-        include/utility/step_function.h
-        src/utility/step_function.cpp
-        include/utility/collection_utilities.h
         )
 
 set(CORE_MATHS

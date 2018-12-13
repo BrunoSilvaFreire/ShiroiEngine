@@ -1,8 +1,11 @@
 function(AddModule MODULE_NAME MODULE_SOURCES MODULE_DEPENDENCIES)
     add_library(${MODULE_NAME} ${MODULE_SOURCES})
-    message("Creating module ${MODULE_NAME}...")
+    message("----- Creating module ${MODULE_NAME}... -----")
     #message("Using include directory '${CMAKE_CURRENT_SOURCE_DIR}/include'")
     set(MODULE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    message("Includes are as follow:")
+    message("Generated sources: ${CMAKE_CURRENT_SOURCE_DIR}/generated")
+    message("Include directory: ${MODULE_INCLUDE_DIR}")
     target_include_directories(${MODULE_NAME}
             PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/generated>
@@ -25,4 +28,5 @@ function(AddModule MODULE_NAME MODULE_SOURCES MODULE_DEPENDENCIES)
     install(DIRECTORY ${MODULE_RESOURCES}/
             DESTINATION ${MODULE_RESOURCES_DESTINATION}
             )
+    message("")
 endfunction()

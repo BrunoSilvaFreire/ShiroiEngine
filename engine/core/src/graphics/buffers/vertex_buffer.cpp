@@ -74,7 +74,7 @@ VertexLayoutElement::VertexLayoutElement(uint32 type, uint8 count, bool normaliz
                                                                                       normalized(normalized) {
 }
 
-const string VertexLayoutElement::getTypeName() const {
+const c_string VertexLayoutElement::getTypeName() const {
     switch (type) {
         case GL_FLOAT:
             return "float";

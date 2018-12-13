@@ -7,7 +7,7 @@
 
 void glClearErrors();
 
-void glCheckErrors(string functionName);
+void glCheckErrors(c_string functionName);
 
 void glPrintBoundTargets() ;
 

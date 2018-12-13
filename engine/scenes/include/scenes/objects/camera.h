@@ -4,9 +4,8 @@
 #include <scenes/scene.h>
 #include <application/application.h>
 #include <glm/glm.hpp>
-#include <serialization/annotation_macros.h>
-#include <camera.gen.inl>
-
+//#include <serialization/annotation_macros.h>
+#define SERIALIZE()
 class Camera : public SceneObject {
 public:
     enum CameraTarget {
@@ -15,6 +14,7 @@ public:
         EXTERNAL_TEXTURE
     };
 private:
+    int test;
     SERIALIZE()
     CameraTarget target;
 

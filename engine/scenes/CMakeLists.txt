@@ -1,5 +1,3 @@
-message("Hello 2")
-
 set(SCENES_SOURCES
         include/scenes/scene.h
         include/scenes/objects/camera.h

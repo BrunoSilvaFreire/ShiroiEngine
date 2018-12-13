@@ -83,8 +83,8 @@ private:
     }
 
 public:
-    static constexpr string kDefaultVertexName = "/stdvertex.vs";
-    static constexpr string kDefaultFragmentName = "/stdfragment.fs";
+    static constexpr c_string kDefaultVertexName = "/stdvertex.vs";
+    static constexpr c_string kDefaultFragmentName = "/stdfragment.fs";
 
     inline static ShaderProgram *fromStreams(std::istream &fragmentShader, std::istream &vertexShader) {
         ShaderSource *fragmentSource;
@@ -97,7 +97,7 @@ public:
 
     }
 
-    static ShaderProgram *defaultProgram(string const path) {
+    static ShaderProgram *defaultProgram(c_string const path) {
         std::string fragmentPath = path;
         std::string vertexPath = path;
         fragmentPath += kDefaultFragmentName;

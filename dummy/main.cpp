@@ -15,7 +15,7 @@ float getInput(GLFWwindow *window, int32 positive, int32 negative) {
     return (glfwGetKey(window, positive) - glfwGetKey(window, negative)) * SPEED;
 }
 
-int main(int count, const string *params) {
+int main(int count, const c_string *params) {
     try {
         Application app("Dummy Application");
         Scene scene(&app);

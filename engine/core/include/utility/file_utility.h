@@ -3,20 +3,14 @@
 
 #include <filesystem>
 #include <types.h>
+#include <fstream>
 
-std::string getExecutableDirectory();
+namespace shiroi::file_utility {
 
-#ifdef WIN32
+    size_t getFileSize(const char *path);
 
-#include <Windows.h>
-#include <graphics/mesh.h>
+    size_t getFileSize(std::string &path);
 
-std::string getExecutableDirectory() {
-    char result[MAX_PATH];
-    auto length = GetModuleFileName(nullptr, result, MAX_PATH);
-    std::string str(result, length);
-    return str.substr(0, str.find_last_of("\\/"));
+    size_t getFileSize(std::filesystem::path &path);
 }
-
-#endif
 #endif

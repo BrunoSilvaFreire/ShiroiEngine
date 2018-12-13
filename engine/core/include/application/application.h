@@ -10,7 +10,7 @@
 
 class Application {
 private:
-    string applicationName;
+    c_string applicationName;
     GraphicsContext *context;
     StepFunction mainStepFunction;
     ServiceManager *serviceManager;
@@ -21,7 +21,7 @@ public:
 
     GraphicsContext *getContext() const;
 
-    const string getApplicationName() const;
+    const c_string getApplicationName() const;
 
     StepFunction &getMainStepFunction();
 

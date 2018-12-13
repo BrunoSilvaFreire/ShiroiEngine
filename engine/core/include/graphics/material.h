@@ -8,7 +8,7 @@
 template<typename T>
 struct MaterialProperty {
 private:
-    string name;
+    c_string name;
     T value;
 public:
     MaterialProperty(const char *name, T value) : name(name), value(value) {}

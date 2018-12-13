@@ -18,7 +18,7 @@ public:
 
     uint32 getType() const;
 
-    const string getTypeName() const;
+    const c_string getTypeName() const;
 
     uint8 getCount() const;
 

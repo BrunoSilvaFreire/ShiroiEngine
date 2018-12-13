@@ -5,14 +5,14 @@ void glClearErrors() {
 }
 
 
-void glCheckErrors(string functionName) {
+void glCheckErrors(c_string functionName) {
     uint32 error;
     while ((error = glGetError()) != GLEW_NO_ERROR) {
         LOG(FATAL) << "Error while calling function " << functionName << ": " << error;
     }
 }
 
-void glPrintBoundTarget(uint32 pName, string desc) {
+void glPrintBoundTarget(uint32 pName, c_string desc) {
     int result;
     glGetIntegerv(pName, &result);
     LOG(INFO) << "Target '" << desc << "' bound @ " << result;

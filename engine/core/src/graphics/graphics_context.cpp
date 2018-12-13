@@ -5,7 +5,7 @@ void errorCB(int a, const char *desc) {
     LOG(ERROR) << "GLFW error #" << a << ": " << desc;
 }
 
-GraphicsContext::GraphicsContext(const string windowTitle, uint32 width, uint32 height) {
+GraphicsContext::GraphicsContext(const c_string windowTitle, uint32 width, uint32 height) {
 
     LOG(INFO) << "Initializing GLFW";
     auto glfwInitCode = glfwInit();

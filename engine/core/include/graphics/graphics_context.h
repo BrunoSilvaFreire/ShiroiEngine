@@ -22,7 +22,7 @@ public:
 
 
     explicit GraphicsContext(
-            string windowTitle,
+            c_string windowTitle,
             uint32 width = kDefaultWidth,
             uint32 height = kDefaultHeight
     );
