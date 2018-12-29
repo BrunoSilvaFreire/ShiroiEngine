@@ -109,7 +109,7 @@ std::string VertexLayoutElement::getStringFromData(uint8 *ptr) {
 
     stream << ") [";
     for (int j = 0; j < count; ++j) {
-        stream << hex(ptr + j * tSize, ptr + (j + 1) * tSize);
+        stream << shiroi::string_utility::hex(ptr + j * tSize, ptr + (j + 1) * tSize);
         if (j != count - 1) {
             stream << ' ';
         }

@@ -7,6 +7,7 @@
 #include <utility/file_utility.h>
 #include <scenes/objects/static_mesh.h>
 #include <maths/angles.h>
+#include <serialization/serialized_object.h>
 
 #define SPEED 0.25F
 #define ROT_SPEED 1.0F

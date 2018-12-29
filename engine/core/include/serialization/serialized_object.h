@@ -1,3 +1,5 @@
+#include <utility>
+
 #ifndef SHIROIENGINE_SERIALIZED_OBJECT_H
 #define SHIROIENGINE_SERIALIZED_OBJECT_H
 
@@ -13,10 +15,10 @@ private:
     size_t size;
 public:
     template<typename T>
-    SerializedMember(const std::string &name, T &value) : name(name), ptr(nullptr), size(0) {
+    SerializedMember(std::string name, T &value) : name(std::move(name)), ptr(nullptr), size(0) {
         size = sizeof(T);
         ptr = (uint8 *) malloc(size);
-        *((T *) ptr) = value;
+        *(ptr) = value;
     }
 
     SerializedMember(const std::string &name, uint8 *ptr, size_t size) : name(name), ptr(ptr), size(size) {}
@@ -53,6 +55,18 @@ public:
     void write(const std::string &name, const T &value) {
         static_assert(false,
                       "You can only use \"write<T>\" with primitive types! For complex objects, create a new serialized object")
+    }
+
+    template<typename T>
+    T extract(const std::string &name) {
+        for (SerializedMember &member : members) {
+            if (member.getName() == name) {
+                assert(member.getSize() == sizeof(T));
+                return (T) *((T *) member.getPtr());
+            }
+
+        }
+        throw std::runtime_error(std::string("Property '") + name + "' not found.");
     }
 
     GENERATE_PRIMITIVE_WRITE_METHOD(float32)

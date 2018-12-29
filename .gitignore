@@ -461,3 +461,6 @@ ASALocalRun/
 .localhistory/
 
 # End of https://www.gitignore.io/api/c++,cmake,jetbrains,visualstudio
+
+generated/
+libs/*

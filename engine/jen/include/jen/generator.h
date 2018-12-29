@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <jen/utility/clang_utility.h>
 #include <functional>
+#include <utility/string_utility.h>
 
 std::ostream &operator<<(std::ostream &stream, const CXString &str);
 
@@ -15,21 +16,38 @@ namespace shiroi::jen {
 
     class GeneratedSources;
 
+    class GeneratedScope {
+    private:
+        std::string header;
+        std::vector<GeneratedScope> children;
+        std::vector<std::string> lines;
+    public:
+        static GeneratedScope
+        method(
+                const std::string &returnType,
+                const std::string &name,
+                const std::vector<std::string> &parameters = std::vector<std::string>()
+        );
+
+        static GeneratedScope
+        constructor(
+                const std::string &className,
+                const std::vector<std::string> &parameters = std::vector<std::string>(),
+                const std::vector<std::string> &fieldsToInitialize = std::vector<std::string>()
+        );
+
+        explicit GeneratedScope(std::string &header) : header(header), children(), lines() {}
+
+        void addLine(std::string &str);
+
+        void addChildren(GeneratedScope &child);
+
+        std::string toString();
+    };
+
     class IGenerator {
     public:
         virtual void process(GeneratedSources *sources) = 0;
-    };
-
-    class GenerationParams {
-    private:
-        GeneratedSources *sources;
-        std::vector<IGenerator *> *generators;
-    public:
-        GenerationParams(GeneratedSources *sources, std::vector<IGenerator *> *generators);
-
-        GeneratedSources *getSources() const;
-
-        std::vector<IGenerator *> *getGenerators() const;
     };
 
     class GeneratedSources {
@@ -38,9 +56,8 @@ namespace shiroi::jen {
         uint32 totalTokens;
         CXToken *tokenPtr;
         CXTranslationUnit unit;
+        std::vector<GeneratedScope> scopes;
     public:
-        static const auto TRANSLATION_FLAGS =
-                CXTranslationUnit_SkipFunctionBodies | CXTranslationUnit_DetailedPreprocessingRecord;
 
         GeneratedSources(
                 const std::filesystem::path &path,
@@ -81,12 +98,14 @@ namespace shiroi::jen {
             return tokenPtr[index];
         }
 
-        void forEachToken(const std::function<void(CXToken, uint32)> &f) {
-            LOG(INFO) << "Total files" << totalTokens;
-            for (uint32 i = 0; i < totalTokens; ++i) {
-                f(tokenPtr[i], i);
-            }
-        }
+        void addScope(const GeneratedScope &scope);
+
+        void forEachToken(const std::function<void(CXToken, uint32)> &f);
+
+        std::string toString();
+
+
+        CXCursor findTypeRefCursorForField(uint32 fieldTokenIndex);
     };
 
 

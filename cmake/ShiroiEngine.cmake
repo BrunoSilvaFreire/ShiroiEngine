@@ -25,8 +25,33 @@ function(AddModule MODULE_NAME MODULE_SOURCES MODULE_DEPENDENCIES)
     )
     set(MODULE_RESOURCES_DESTINATION "${CMAKE_INSTALL_PREFIX}/resources/${MODULE_NAME}")
     message("Resources of ${MODULE_NAME} will be installed into '${MODULE_RESOURCES_DESTINATION}'")
+    RecurseCollectInto(MODULE_ALL_INCLUDES ${MODULE_NAME})
     install(DIRECTORY ${MODULE_RESOURCES}/
             DESTINATION ${MODULE_RESOURCES_DESTINATION}
             )
+
+    file(GLOB_RECURSE MODULE_ALL_FILES
+            ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
+    add_custom_target(
+            ${MODULE_NAME}_run_jen
+            DEPENDS ${MODULE_NAME} jen
+            COMMAND
+            $<TARGET_FILE:jen> --fileList "${MODULE_ALL_FILES}" --outputPath "${CMAKE_CURRENT_SOURCE_DIR}/generated" --includePath "${MODULE_ALL_INCLUDES}"
+    )
     message("")
 endfunction()
+macro(RecurseCollectInto DESTINATION TARGET)
+    get_target_property(TEMP_DEPENDENCIES ${TARGET} INTERFACE_LINK_LIBRARIES)
+    if (NOT "${TEMP_DEPENDENCIES}" STREQUAL TEMP_DEPENDENCIES-NOTFOUND)
+        foreach (dep ${TEMP_DEPENDENCIES})
+            if (TARGET ${dep})
+                get_target_property(TEMP_INCLUDES ${dep} INTERFACE_INCLUDE_DIRECTORIES)
+                if (NOT "${TEMP_INCLUDES}" STREQUAL "")
+                    set(${DESTINATION} "${TEMP_INCLUDES};${${DESTINATION}}")
+                    RecurseCollectInto(${DESTINATION} ${dep})
+                endif ()
+            endif ()
+        endforeach ()
+    endif ()
+
+endmacro()

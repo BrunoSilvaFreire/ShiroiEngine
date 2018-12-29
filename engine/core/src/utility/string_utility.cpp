@@ -1,7 +1,7 @@
 #include <utility/string_utility.h>
 #include <glog/logging.h>
 
-std::vector<std::string> split(std::string strToSplit, int8 delimeter) {
+std::vector<std::string> shiroi::string_utility::split(std::string strToSplit, int8 delimeter) {
     std::string item;
     std::vector<std::string> splittedStrings;
     for (char c : strToSplit) {
@@ -18,16 +18,24 @@ std::vector<std::string> split(std::string strToSplit, int8 delimeter) {
     return splittedStrings;
 }
 
-template<typename T>
-std::string hex(T first, T last, bool use_uppercase, bool insert_spaces) {
-    std::ostringstream ss;
-    ss << std::hex << std::setfill('0');
-    if (use_uppercase)
-        ss << std::uppercase;
-    while (first != last) {
-        ss << std::setw(2) << static_cast<int>(*first++);
-        if (insert_spaces && first != last)
-            ss << " ";
+
+std::string shiroi::string_utility::join(
+        const std::vector<std::string> &strings,
+        const std::string &separator,
+        std::function<std::string(std::string)> transform
+) {
+    std::string str;
+    auto end = strings.size();
+    for (int i = 0; i < end; ++i) {
+        auto s = strings[i];
+        if (transform == nullptr) {
+            str += s;
+        } else {
+            str += transform(str);
+        }
+        if (i != end - 1) {
+            str += separator;
+        }
     }
-    return ss.str();
+    return str;
 }

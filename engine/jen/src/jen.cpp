@@ -49,7 +49,7 @@ CXSourceRange get_filerange(const CXTranslationUnit &tu, const char *filename) {
 int main(int argc, char *args[]) {
     LOG(ERROR) << "Using CLang version '" << clang_getCString(clang_getClangVersion()) << "'";
     gflags::ParseCommandLineFlags(&argc, &args, false);
-    auto fileList = split(FLAGS_fileList, ';');
+    auto fileList = shiroi::string_utility::split(FLAGS_fileList, ';');
     if (fileList.empty()) {
         LOG(ERROR) << "No files were provided. (You need to provide a list of files using '--fileList')";
         return ERR_NO_FILES;
@@ -63,7 +63,7 @@ int main(int argc, char *args[]) {
         LOG(INFO) << '\'' << file << '\'';
     }
     LOG(INFO);
-    auto includeList = split(FLAGS_includePath, ';');
+    auto includeList = shiroi::string_utility::split(FLAGS_includePath, ';');
     if (includeList.empty()) {
         LOG(INFO)
                 << "There are no include directories provided (You can specify them using the '--includePath {paths}' option, paths are separated by semi-colons)";
@@ -84,13 +84,13 @@ int main(int argc, char *args[]) {
     std::string argLine;
     auto totalArgs = clangArgs.size();
     for (int i = 0; i < totalArgs; ++i) {
-        argLine += clangArgs[i];
+        auto arg = clangArgs[i];
+        argLine += arg;
         if (i != totalArgs - 1) {
             argLine += ' ';
         }
     }
     LOG(INFO) << "Clang args: '" << argLine << "'";
-    const auto TRANSLATION_FLAGS = CXTranslationUnit_SkipFunctionBodies | CXTranslationUnit_DetailedPreprocessingRecord;
     auto generators = createDefaultGenerators();
     for (std::string &file : fileList) {
         std::filesystem::path filePath = std::filesystem::absolute(file);
@@ -98,30 +98,16 @@ int main(int argc, char *args[]) {
         const char *filename = f.c_str();
         LOG(INFO) << "Processing file: " << filename;
 
-        auto outputPath = outputDir.string() + "\\" + filePath.filename().replace_extension(".gen.inl").string();
+        auto outputPath = outputDir / filePath.filename().replace_extension(".gen.inl");
         CXIndex index = clang_createIndex(false, false);
-        /*auto unit = clang_parseTranslationUnit(index, filename, clangArgs.data(), clangArgs.size(), nullptr, 0, TRANSLATION_FLAGS);
-        if (unit == nullptr) {
-            LOG(ERROR) << "Unable to create Translation Unit for file '" << filePath << "'";
-            continue;
-        }
-        CXCursor cursor = clang_getTranslationUnitCursor(unit);
-        CXToken *resultTokens;
-        uint32 totalTokens;
-        auto clangFile = clang_getFile(unit, filename);
-        auto range = get_filerange(unit, filename);
-        clang_tokenize(unit, range, &resultTokens, &totalTokens);
-        for (int i = 0; i < totalTokens; ++i) {
-            auto kind = clang_getTokenKind(resultTokens[i]);
-            LOG(INFO) << "Token #" << i << ": " << clang_getTokenSpelling(unit, resultTokens[i]) << ", kind: "
-                      << clang_getTokenKind(resultTokens[i]);
-        }*/
         try {
-
-
             auto sources = new shiroi::jen::GeneratedSources(filePath, clangArgs, generators);
+            auto src = sources->toString();
+            std::ofstream s(outputPath);
+            s << src;
+            s.close();
             delete sources;
-        } catch (std::runtime_error& e){
+        } catch (std::runtime_error &e) {
             LOG(FATAL) << e.what();
         }
 
