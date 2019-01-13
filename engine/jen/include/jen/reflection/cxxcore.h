@@ -4,6 +4,7 @@
 #define SHIROIENGINE_CXXCORE_H
 
 #include <string>
+
 namespace shiroi::jen::reflection {
 
     enum CXXAccessModifier {
@@ -20,9 +21,9 @@ namespace shiroi::jen::reflection {
     private:
         std::string name;
     public:
-        explicit CXXIdentifiable(const std::string& name);
+        explicit CXXIdentifiable(const std::string &name);
 
-        const std::string getName() const;
+        const std::string &getName() const;
     };
 
     class CXXType : public CXXIdentifiable {

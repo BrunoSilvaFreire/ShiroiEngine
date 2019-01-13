@@ -1,13 +1,12 @@
-#include <utility>
 
-#ifndef SHIROIENGINE_GENERATED_SCOPE_H
-#define SHIROIENGINE_GENERATED_SCOPE_H
+#ifndef SHIROIENGINE_GENERATED_SOURCE_H
+#define SHIROIENGINE_GENERATED_SOURCE_H
 
+#include <string>
 #include <vector>
-#include <ostream>
 #include <types.h>
 
-namespace shiroi::jen::utility {
+namespace shiroi::jen::generation {
     class GeneratedScope {
     public:
         enum OptionFlags {
@@ -16,7 +15,7 @@ namespace shiroi::jen::utility {
         static const OptionFlags kDefaultOptions = OptionFlags::BRACES;
     private:
 
-        std::string title;
+        std::string header;
         OptionFlags flags;
         std::vector<std::string> lines;
         std::vector<GeneratedScope> children;
@@ -34,9 +33,16 @@ namespace shiroi::jen::utility {
                 std::vector<GeneratedScope> children = std::vector<GeneratedScope>()
         );
 
-        std::string parse(uint32 indentLevel = 0);
+        std::string parse(uint32 indentLevel = 0) const;
 
         void addLine(const std::string &str);
+
+        static GeneratedScope constructor(
+                const std::string &clazz,
+                std::vector<std::string> parameters,
+                std::vector<std::string> initializers
+        );
     };
 }
+
 #endif

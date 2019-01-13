@@ -15,7 +15,7 @@
 namespace shiroi::jen::reflection {
 
 
-    class CXXMember : CXXIdentifiable {
+    class CXXMember : public CXXIdentifiable {
     private:
         CXXAccessModifier accessModifier;
         std::vector<CXXMacroExpansion> macros;
@@ -26,10 +26,13 @@ namespace shiroi::jen::reflection {
         CXXAccessModifier getAccessModifier() const;
 
         const std::vector<CXXMacroExpansion> &getMacros() const;
+
+        const CXXMacroExpansion &findMacroExpansion(const std::string &name) const;
+
     };
 
 
-    class CXXField : CXXMember {
+    class CXXField : public CXXMember {
     private:
         std::string type;
     public:
@@ -54,11 +57,16 @@ namespace shiroi::jen::reflection {
         friend std::ostream &operator<<(std::ostream &os, const CXXParent &parent);
     };
 
-    class CXXClass : CXXType {
+    class CXXClass : public CXXType {
     private:
         std::vector<CXXField> fields;
         std::vector<CXXParent> parents;
     public:
+        CXXClass(const std::string &name, const std::vector<CXXField> &fields, const std::vector<CXXParent> &parents);
+
+        const std::vector<CXXField> &getFields() const;
+
+        const std::vector<CXXParent> &getParents() const;
     };
 
     std::ostream &operator<<(std::ostream &stream, CXXAccessModifier modifier);

@@ -1,11 +1,12 @@
 #include <jen/reflection/cxxparser.h>
 #include <jen/reflection/cxxmacros.h>
+#include <functional>
 
 #define CONSUMER(x) [&](CXToken token, std::string tokenContent, CXCursor cursor, std::string cursorContent, size_t &index) { x; }
 
 
 namespace shiroi::jen::reflection {
-    void parseClass(
+    CXXClass parseClass(
             CXCursor &classCursor,
             size_t &i,
             const std::vector<CXToken> &tokens,
@@ -74,21 +75,24 @@ namespace shiroi::jen::reflection {
         std::vector<CXToken> tokens(tokenPtr, tokenPtr + totalTokens);
         std::vector<CXXClass> classes;
         for (size_t j = 0; j < tokens.size(); ++j) {
-            LOG(INFO) << "Token #" << j;
             auto &token = tokens[j];
             auto cursor = clang_getCursor(clangUnit, clang_getTokenLocation(clangUnit, token));
+            LOG(INFO) << "Token " << j << "/" << tokens.size() << " (" << cursor << ")";
             auto cursorKind = clang_getCursorKind(cursor);
             switch (cursorKind) {
                 case CXCursorKind::CXCursor_ClassDecl:
-                    parseClass(cursor, j, tokens, clangUnit);
+                    classes.push_back(parseClass(cursor, j, tokens, clangUnit));
                     break;
-
+                /*case CXCursorKind::CXCursor_NoDeclFound:
+                    j = tokens.size();
+                    break;*/
                 default:
                     LOG(INFO) << "Unhandled cursor " << cursor;
                     break;
             }
         }
-        return CXXUnit();
+        LOG(INFO) << "Parsed.";
+        return CXXUnit(classes, std::vector<CXXMethod>());
     }
 
     typedef std::function<bool(CXToken, std::string, CXCursor, std::string, size_t &)> ConsumePredicate;
@@ -116,20 +120,18 @@ namespace shiroi::jen::reflection {
     typedef std::function<bool(CXToken, std::string, CXCursor)> TempP;
 
 
-    void parseClass(
+    CXXClass parseClass(
             CXCursor &classCursor,
             size_t &i,
             const std::vector<CXToken> &tokens,
             CXTranslationUnit &translationUnit
     ) {
         std::string className = clang_getCString(clang_getCursorSpelling(classCursor));
-        LOG(INFO) << "Parsing class " << className;
         CXXAccessModifier accessModifier = CXXAccessModifier::INTERNAL;
         std::vector<CXXParent> parents;
 
         consumeWhile(translationUnit, i, tokens,
                      [&](CXToken, std::string tokenContent, CXCursor cr, std::string, size_t &) -> bool {
-                         LOG(INFO) << "Token: " << cr;
                          switch (clang_getCursorKind(cr)) {
                              case CXCursorKind::CXCursor_CXXBaseSpecifier:
                                  accessModifier = getAccessModifier(tokenContent);
@@ -149,7 +151,6 @@ namespace shiroi::jen::reflection {
                      }
         );
 
-        LOG(INFO) << "Parents of " << className << " (" << parents.size() << ") are: ";
         for (CXXParent &str : parents) {
             LOG(INFO) << str;
         }
@@ -157,44 +158,50 @@ namespace shiroi::jen::reflection {
         std::vector<CXXMacroExpansion> activeMacros;
         std::string lastTypeRef;
         consumeWhile(translationUnit, i, tokens,
-                     CONSUMER({
-                                  LOG(INFO) << "Is now: " << cursor << " @ " << tokenContent;
-                                  switch (clang_getCursorKind(cursor)) {
-                                      case CXCursorKind::CXCursor_TypeRef:
-                                          lastTypeRef = tokenContent;
-                                          break;
-                                      case CXCursorKind::CXCursor_CXXAccessSpecifier:
-                                          if (tokenContent == ":") {
-                                              break;
-                                          }
-                                          accessModifier = getAccessModifier(tokenContent);
-                                          LOG(INFO) << "Access is now " << accessModifier << "(" << tokenContent << ")";
-                                          break;
-                                      case CXCursorKind::CXCursor_EnumDecl:
-                                          if (tokenContent == "enum") {
-                                              break;
-                                          }
-                                          parseEnum(cursor, index, tokens, translationUnit);
-                                          break;
-                                      case CXCursorKind::CXCursor_MacroExpansion:
-                                          activeMacros.push_back(
-                                                  parseMacroExpansion(cursor, index, tokens, translationUnit));
-                                          break;
-                                      case CXCursorKind::CXCursor_FieldDecl:
-                                          if (tokenContent == ",") {
-                                              break;
-                                          }
-                                          fields.emplace_back(tokenContent, accessModifier, activeMacros, lastTypeRef);
-                                          activeMacros.clear();
-                                          break;
-                                      default:
-                                          break;
-                                  }
-                                  return true;
-                              }
+                     CONSUMER(
+                             switch (clang_getCursorKind(cursor)) {
+                                 case CXCursorKind::CXCursor_TypeRef:
+                                     lastTypeRef = tokenContent;
+                                     break;
+                                 case CXCursorKind::CXCursor_CXXAccessSpecifier:
+                                     if (tokenContent == ":") {
+                                         break;
+                                     }
+                                     accessModifier = getAccessModifier(tokenContent);
+                                     break;
+                                 case CXCursorKind::CXCursor_EnumDecl:
+                                     if (tokenContent == "enum") {
+                                         break;
+                                     }
+                                     parseEnum(cursor, index, tokens, translationUnit);
+                                     break;
+                                 case CXCursorKind::CXCursor_MacroExpansion:
+                                     activeMacros.push_back(
+                                             parseMacroExpansion(cursor, index, tokens, translationUnit));
+                                     break;
+                                 case CXCursorKind::CXCursor_FieldDecl:
+                                     if (tokenContent == ",") {
+                                         break;
+                                     }
+                                     fields.emplace_back(tokenContent, accessModifier, activeMacros, lastTypeRef);
+                                     activeMacros.clear();
+                                     break;
+                                 case CXCursorKind::CXCursor_ClassDecl:
+                                     if (tokenContent == "}") {
+                                         return false;
+                                     }
+                                     break;
+                                 default:
+                                     break;
+                             }
+                             return true;
                      )
         );
-
+        return CXXClass(
+                className,
+                fields,
+                parents
+        );
     }
 
     void parseEnum(
@@ -206,7 +213,6 @@ namespace shiroi::jen::reflection {
         CXString cxEnumName = clang_getCursorSpelling(enumNameCursor);
         std::string enumName = clang_getCString(cxEnumName);
         clang_disposeString(cxEnumName);
-        LOG(INFO) << "Enum Name: " << enumName;
 
         std::vector<CXXEnum::CXXEnumConstant> constants;
         size_t enumValue = 0;
@@ -225,10 +231,6 @@ namespace shiroi::jen::reflection {
                 }
                 return true;
         ));
-        LOG(INFO) << "Contants: ";
-        for (CXXEnum::CXXEnumConstant &constant : constants) {
-            LOG(INFO) << constant;
-        }
     }
 
     CXXMacroExpansion parseMacroExpansion(CXCursor macroNameCursor, size_t &i, const std::vector<CXToken> &tokens,
@@ -236,7 +238,6 @@ namespace shiroi::jen::reflection {
         CXString cxMacroName = clang_getCursorSpelling(macroNameCursor);
         std::string macroName = clang_getCString(cxMacroName);
         clang_disposeString(cxMacroName);
-        LOG(INFO) << "Macro Name: " << macroName;
         std::vector<std::string> macroArguments;
         consumeWhile(translationUnit, i, tokens, CONSUMER(
                 if (tokenContent == "," || tokenContent == "(") {
@@ -249,5 +250,16 @@ namespace shiroi::jen::reflection {
                 return true;
         ));
         return CXXMacroExpansion(macroName, macroArguments);
+    }
+
+    CXXUnit::CXXUnit(const std::vector<CXXClass> &classes, const std::vector<CXXMethod> &methods) : classes(classes),
+                                                                                                    methods(methods) {}
+
+    const std::vector<CXXClass> &CXXUnit::getClasses() const {
+        return classes;
+    }
+
+    const std::vector<CXXMethod> &CXXUnit::getMethods() const {
+        return methods;
     }
 }

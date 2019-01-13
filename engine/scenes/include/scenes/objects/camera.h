@@ -30,8 +30,7 @@ private:
     void reloadProjectionMatrix();
 
 public:
-//#include <Camera.gen.inl>
-
+#include <Camera.gen.inl>
 
     explicit Camera(Scene *scene, float32 nearPlane = 1.0F, float32 farPlane = 500.0F, float32 fov = 60);
 

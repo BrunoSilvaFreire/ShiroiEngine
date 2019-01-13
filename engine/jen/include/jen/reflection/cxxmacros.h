@@ -8,9 +8,14 @@
 namespace shiroi::jen::reflection {
     class CXXMacroExpansion : public CXXIdentifiable {
     private:
+        bool invalid;
         std::vector<std::string> parameters;
     public:
-        CXXMacroExpansion(const std::string &name, const std::vector<std::string> &parameters);
+        const static CXXMacroExpansion kInvalidExpression;
+
+        bool isInvalid() const;
+
+        CXXMacroExpansion(const std::string &name, const std::vector<std::string> &parameters, bool invalid = false);
     };
 }
 #endif

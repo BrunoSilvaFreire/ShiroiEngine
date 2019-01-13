@@ -1,10 +1,10 @@
-#include <jen/generator.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <utility/string_utility.h>
 #include <filesystem>
 #include <fstream>
-#include <jen/serialization_generator.h>
+#include <jen/generation/cxxgenerator.h>
+#include <jen/generation/serialization_generator.cpp>
 
 DEFINE_string(fileList, "",
               "The list of files to process and generate definitions for. The files should be splitted using a ';' delimiter");
@@ -13,10 +13,9 @@ DEFINE_string(includePath, "", "The list of directories to provide includes, spl
 
 #define ERR_NO_FILES 1
 
-#include <jen/queued_class.h>
 #include <jen/reflection/cxxparser.h>
 
-inline std::vector<shiroi::jen::IGenerator *> createDefaultGenerators();
+inline std::vector<shiroi::jen::generation::CXXGenerator *> createDefaultGenerators();
 
 unsigned get_filesize(const char *fileName) {
     FILE *fp = fopen(fileName, "r");
@@ -85,8 +84,6 @@ int main(int argc, char *args[]) {
     auto clangArgs = std::vector<std::string>();
     clangArgs.emplace_back("-x");
     clangArgs.emplace_back("c++");
-    /*clangArgs.emplace_back("-W");
-    clangArgs.emplace_back("c++17-extensions");*/
     for (std::string &includeDir : includeList) {
         clangArgs.emplace_back("-I");
         clangArgs.emplace_back(includeDir.c_str());
@@ -104,23 +101,21 @@ int main(int argc, char *args[]) {
 
 
         try {
-            shiroi::jen::reflection::parse(filePath, paths);
-            /*auto gen = createDefaultGenerators();
-            auto sources = new shiroi::jen::GenerationProcessor(filePath, gen, clangArgs);
-            auto result = sources->process();
-            for (std::tuple<shiroi::jen::CXXClass *, std::string> &tuple : result) {
-                shiroi::jen::CXXClass *clazz = std::get<0>(tuple);
-                std::string &content = std::get<1>(tuple);
-                auto outputPath = outputDir / (clazz->getName() + ".gen.inl");
-                if (content.empty()) {
-                    continue;
+            auto unit = shiroi::jen::reflection::parse(filePath, paths);
+            auto gen = createDefaultGenerators();
+            auto &classes = unit.getClasses();
+            for (const shiroi::jen::reflection::CXXClass &clazz : classes) {
+                auto context = shiroi::jen::generation::CXXGenerationContext();
+                for (shiroi::jen::generation::CXXGenerator * generator : gen) {
+                    generator->generate(unit, clazz, context);
                 }
+                auto outputPath = outputDir / (clazz.getName() + ".gen.inl");
+
                 std::ofstream s(outputPath);
-                s << content;
+                s << context;
                 s.close();
             }
 
-            delete sources;*/
         } catch (std::runtime_error &e) {
             LOG(ERROR) << e.what();
         }
@@ -128,8 +123,8 @@ int main(int argc, char *args[]) {
 }
 
 
-std::vector<shiroi::jen::IGenerator *> createDefaultGenerators() {
-    auto vec = std::vector<shiroi::jen::IGenerator *>();
-    vec.push_back(new shiroi::jen::SerializationGenerator());
+std::vector<shiroi::jen::generation::CXXGenerator *> createDefaultGenerators() {
+    auto vec = std::vector<shiroi::jen::generation::CXXGenerator *>();
+    vec.push_back(new shiroi::jen::generation::SerializationGenerator());
     return vec;
 }

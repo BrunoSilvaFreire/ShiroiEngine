@@ -7,7 +7,6 @@
 #include <types.h>
 #include <glog/logging.h>
 #include <jen/utility/clang_utility.h>
-#include <jen/queued_class.h>
 
 namespace shiroi::jen::reflection {
     class CXXUnit {
@@ -15,6 +14,12 @@ namespace shiroi::jen::reflection {
 
         std::vector<CXXClass> classes;
         std::vector<CXXMethod> methods;
+    public:
+        CXXUnit(const std::vector<CXXClass> &classes, const std::vector<CXXMethod> &methods);
+
+        const std::vector<CXXClass> &getClasses() const;
+
+        const std::vector<CXXMethod> &getMethods() const;
     };
 
     CXXUnit parse(

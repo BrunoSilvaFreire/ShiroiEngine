@@ -1,7 +1,7 @@
 #include <jen/reflection/cxxclass.h>
 
 namespace shiroi::jen::reflection {
-    const std::string CXXIdentifiable::getName() const {
+    const std::string& CXXIdentifiable::getName() const {
         return name;
     }
 
@@ -28,6 +28,15 @@ namespace shiroi::jen::reflection {
                          const std::vector<CXXMacroExpansion> &macros) : CXXIdentifiable(name),
                                                                          accessModifier(accessModifier),
                                                                          macros(macros) {}
+
+    const CXXMacroExpansion &CXXMember::findMacroExpansion(const std::string &name) const {
+        for (const CXXMacroExpansion &macro : macros) {
+            if (macro.getName() == name) {
+                return macro;
+            }
+        }
+        return CXXMacroExpansion::kInvalidExpression;
+    }
 
     const std::vector<CXXParameter> &CXXMethod::getParameters() const {
         return parameters;
@@ -142,5 +151,16 @@ namespace shiroi::jen::reflection {
 
     const std::string &CXXField::getType() const {
         return type;
+    }
+
+    CXXClass::CXXClass(const std::string &name, const std::vector<CXXField> &fields,
+                       const std::vector<CXXParent> &parents) : CXXType(name), fields(fields), parents(parents) {}
+
+    const std::vector<CXXField> &CXXClass::getFields() const {
+        return fields;
+    }
+
+    const std::vector<CXXParent> &CXXClass::getParents() const {
+        return parents;
     }
 }
