@@ -16,3 +16,6 @@
 [submodule "libs/gflags"]
 	path = libs/gflags
 	url = https://github.com/gflags/gflags.git
+[submodule "libs/regen"]
+	path = libs/regen
+	url = https://github.com/biojppm/regen

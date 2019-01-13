@@ -7,10 +7,9 @@
 #include <serialization/annotation_macros.h>
 #include <serialization/serialized_object.h>
 
-#define SERIALIZE()
-
 class Camera : public SceneObject {
 public:
+
     enum CameraTarget {
         SCREEN,
         EMBEDDED_TEXTURE,
@@ -31,7 +30,7 @@ private:
     void reloadProjectionMatrix();
 
 public:
-//#include <camera.gen.inl>
+//#include <Camera.gen.inl>
 
 
     explicit Camera(Scene *scene, float32 nearPlane = 1.0F, float32 farPlane = 500.0F, float32 fov = 60);

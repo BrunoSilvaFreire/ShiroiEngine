@@ -5,7 +5,7 @@
 #include <vector>
 #include <types.h>
 #include <glm/glm.hpp>
-
+#include <serialization/annotation_macros.h>
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/gtx/quaternion.hpp>
@@ -21,8 +21,13 @@ public:
         rotation(rotation),
         scale(scale) {}
 
+    SERIALIZE()
     glm::vec3 position;
+
+    SERIALIZE()
     glm::quat rotation;
+
+    SERIALIZE()
     glm::vec3 scale;
 
     glm::mat4 toViewMatrix() const {

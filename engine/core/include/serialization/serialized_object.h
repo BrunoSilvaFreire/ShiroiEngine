@@ -52,17 +52,14 @@ private:
     std::vector<SerializedMember *> members;
 public:
     template<typename T>
-    void write(const std::string &name, const T &value) {
-        static_assert(false,
-                      "You can only use \"write<T>\" with primitive types! For complex objects, create a new serialized object")
-    }
+    void write(const std::string &name, const T &value);
 
     template<typename T>
     T extract(const std::string &name) {
-        for (SerializedMember &member : members) {
-            if (member.getName() == name) {
-                assert(member.getSize() == sizeof(T));
-                return (T) *((T *) member.getPtr());
+        for (SerializedMember *member : members) {
+            if (member->getName() == name) {
+                assert(member->getSize() == sizeof(T));
+                return (T) *((T *) member->getPtr());
             }
 
         }
@@ -111,6 +108,12 @@ private:
         members.push_back(new SerializedMember(name, value));
     }
 };
+
+template<typename T>
+void SerializedObject::write(const std::string &name, const T &value) {
+/*    static_assert(false,
+                  "You can only use \"write<T>\" with primitive types! For complex objects, create a new serialized object")*/
+}
 
 class ISerializable {
     virtual void serialize(SerializedObject object) = 0;
