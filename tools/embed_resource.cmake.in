@@ -1,0 +1,11 @@
+#ifndef ${MODULE_NAME_UPPER}_${RESOURCE_NAME_UPPER}_H
+#define ${MODULE_NAME_UPPER}_${RESOURCE_NAME_UPPER}_H
+
+const unsigned char ${RESOURCE_NAME_UPPER}[] = {
+        ${RESOURCE_DATA}
+};
+
+const unsigned ${RESOURCE_NAME_UPPER}_SIZE = sizeof(${RESOURCE_NAME_UPPER});
+#define ${RESOURCE_NAME_UPPER}_CONTENT std::string((char *) ${RESOURCE_NAME_UPPER}, ${RESOURCE_NAME_UPPER}_SIZE)
+
+#endif

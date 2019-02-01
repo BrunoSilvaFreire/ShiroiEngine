@@ -6,7 +6,7 @@
 
 class ServiceManager {
 private:
-    std::vector<Service *> registeredServices;
+    std::vector<IService *> registeredServices;
 public:
     ServiceManager() {
         registeredServices.push_back(new EmbedShapes());
@@ -14,6 +14,8 @@ public:
 
     template<typename T>
     T *getService();
+
+    void registerService(IService *service);
 };
 
 

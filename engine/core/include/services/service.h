@@ -3,12 +3,13 @@
 
 #include <utility/step_function.h>
 
-class Service {
+class IService {
 public:
-    virtual ~Service() = default;
+
+    virtual ~IService() = default;
 };
 
-class RuntimeService : Service {
+class RuntimeService : IService {
 private:
     StepFunction mainStep;
 public:

@@ -7,6 +7,9 @@
 #include <fstream>
 #include <filesystem>
 #include <graphics/buffers/opengl_buffer.h>
+#include <shaders/stdfragment.fs.h>
+#include <shaders/stdvertex.vs.h>
+
 class ShaderSource {
 private:
     std::string src;
@@ -20,7 +23,10 @@ public:
         return new ShaderSource(result);
     }
 
+    explicit ShaderSource(const std::string &src) : src(src) {}
+
     explicit ShaderSource(std::ostringstream &stream) : src(stream.str()) {}
+
 
     std::string getSource() const {
         return src;
@@ -97,23 +103,16 @@ public:
 
     }
 
-    static ShaderProgram *defaultProgram(c_string const path) {
-        std::string fragmentPath = path;
-        std::string vertexPath = path;
-        fragmentPath += kDefaultFragmentName;
-        vertexPath += kDefaultVertexName;
-        auto fPath = std::filesystem::absolute(fragmentPath);
-        auto vPath = std::filesystem::absolute(vertexPath);
-        LOG(INFO) << "Using default shaders: Fragment: '" << fPath << "', Vertex: '" << vPath << "'";
-        std::ifstream fStream(fPath);
-        std::ifstream vStream(vPath);
-        if (!fStream.good()) {
-            throw std::runtime_error("Couldn't find default fragment shader @ " + fPath.string());
+private:
+    inline static ShaderProgram *defaultInstance = nullptr;
+public:
+    static ShaderProgram *defaultProgram() {
+        if (defaultInstance == nullptr) {
+            ShaderSource fragmentSource(STDFRAGMENT_FS_CONTENT);
+            ShaderSource vertexSource(STDVERTEX_VS_CONTENT);
+            defaultInstance = new ShaderProgram(&fragmentSource, &vertexSource);
         }
-        if (!vStream.good()) {
-            throw std::runtime_error("Couldn't find default vertex shader @ " + vPath.string());
-        }
-        return ShaderProgram::fromStreams(fStream, vStream);
+        return defaultInstance;
     }
 
     ShaderProgram(ShaderSource *fragment, ShaderSource *vertex) {

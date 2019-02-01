@@ -18,7 +18,7 @@ const c_string Application::getApplicationName() const {
 
 #define FAKE_DELTA_TIME 0.0166666667F
 
-ServiceManager *Application::getServiceManager() {
+ServiceManager *Application::getServiceManager() const {
     return serviceManager;
 }
 

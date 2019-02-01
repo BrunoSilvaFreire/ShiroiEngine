@@ -7,7 +7,7 @@
 #include <services/service.h>
 #include <graphics/mesh.h>
 
-class EmbedShapes : public Service {
+class EmbedShapes : public IService {
 private:
     VertexLayout embedLayout3D;
     VertexLayout embedLayout2D;

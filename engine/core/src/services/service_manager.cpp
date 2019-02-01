@@ -1,2 +1,4 @@
 #include <services/service_manager.h>
-#include <utility/embed_shapes.h>
+void ServiceManager::registerService(IService *srv) {
+    registeredServices.push_back(srv);
+}

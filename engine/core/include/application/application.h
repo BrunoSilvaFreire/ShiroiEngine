@@ -27,7 +27,7 @@ public:
 
     void run();
 
-    ServiceManager *getServiceManager();
+    ServiceManager *getServiceManager() const;
 };
 
 struct DamageInfo {

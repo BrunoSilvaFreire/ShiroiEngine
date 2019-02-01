@@ -4,6 +4,9 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/dummy" />
+      <file path="$PROJECT_DIR$/editor/include" />
+      <file path="$PROJECT_DIR$/editor/src" />
+      <file path="$PROJECT_DIR$/engine/core/generated" />
       <file path="$PROJECT_DIR$/engine/core/include" />
       <file path="$PROJECT_DIR$/engine/core/resources" />
       <file path="$PROJECT_DIR$/engine/core/src" />
@@ -13,6 +16,8 @@
       <file path="$PROJECT_DIR$/engine/scenes/include" />
       <file path="$PROJECT_DIR$/engine/scenes/resources" />
       <file path="$PROJECT_DIR$/engine/scenes/src" />
+      <file path="$PROJECT_DIR$/engine/ui/include" />
+      <file path="$PROJECT_DIR$/engine/ui/src" />
     </sourceRoots>
     <libraryRoots>
       <file path="$PROJECT_DIR$/libs" />

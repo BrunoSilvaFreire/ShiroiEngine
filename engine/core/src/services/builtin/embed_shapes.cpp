@@ -45,10 +45,7 @@ VertexLayout createSimpleLayout(uint8 components) {
 EmbedShapes::EmbedShapes() {
     embedLayout3D = createSimpleLayout(3);
     embedLayout2D = createSimpleLayout(2);
-    //TODO: Remove and load paths properly
-    auto path = "../resources/core/shaders";
-    ShaderProgram *program;
-    program = ShaderProgram::defaultProgram(path);
+    ShaderProgram *program = ShaderProgram::defaultProgram();
     embedMaterial = new Material(program);
     LOG(INFO) << "Successfully loaded shaders.";
     program->bind();
